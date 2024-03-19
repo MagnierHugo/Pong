@@ -34,20 +34,6 @@ struct Game GameSetup(SDL_Window* window, SDL_Renderer* renderer) {
 
 	SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
-	/*game.leftPlayer = (SDL_Rect){ 50, 100, 20, 50 };
-
-	game.rightPlayer = (SDL_Rect){ 750, 100, 20, 50 };
-
-	game.ball = (SDL_Rect){ windowWidth/2, windowHeight/2, 40, 40 };
-
-	game.playerColor = (struct Color){ 255, 255, 255, 255 };
-	game.ballColor = (struct Color){ 255, 255, 255, 255 };
-
-	game.leftPlayerScore = 0;
-	game.rightPlayerScore = 0;
-	game.playerSpeed = 2;
-	game.ballSpeed = { 10, 10 };*/
-
 	game.gameObjects[0] = (struct GameObject){
 		"LeftPlayer",
 		(SDL_Rect){ 50, 100, 20, 50 },
