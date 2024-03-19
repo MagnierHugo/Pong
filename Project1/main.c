@@ -188,7 +188,7 @@ int main(int argc, char* argv[])
         continueRunning = HandleInput(paddles);
 
 
-        UpdateBalls(balls, ballAmount, 1);
+        UpdateBalls(balls, ballAmount, paddles, 1);
         WindowClear(sdl.renderer);
         DrawBalls(sdl.renderer, balls, ballAmount);
         DrawPaddles(sdl.renderer, paddles);

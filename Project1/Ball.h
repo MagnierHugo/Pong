@@ -20,7 +20,6 @@ struct Ball
     struct Color Color;
 };
 
-void UpdateBall(struct Ball* ball, float deltaTime);
 SDL_Rect BallAsRect(struct Ball ball);
-void UpdateBalls(struct Ball* balls, int ballAmount, float deltaTime);
+void UpdateBalls(struct Ball* balls, int ballAmount, struct Paddle paddles[2], float deltaTime);
 void DrawBalls(SDL_Renderer* renderer, struct Ball* balls, int ballAmount);

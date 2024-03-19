@@ -23,7 +23,7 @@ struct Ball
 	struct Color Color;
 };
 
-void UpdateBall(struct Ball* ball, float deltaTime)
+static void UpdateBall(struct Ball* ball, struct Paddle paddles[2], float deltaTime)
 {
 	ball->X += (int)(ball->DirX * deltaTime * ball->Speed);
 	ball->Y += (int)(ball->DirY * deltaTime * ball->Speed);
@@ -43,11 +43,14 @@ SDL_Rect BallAsRect(struct Ball ball)
 	return (SDL_Rect) { ball.X, ball.Y, ball.Size, ball.Size };
 }
 
-void UpdateBalls(struct Ball* balls, int ballAmount, float deltaTime)
+void UpdateBalls(struct Ball* balls, int ballAmount, struct Paddle paddles[2], float deltaTime)
 {
+
+
+
 	for (int i = 0; i < ballAmount; i++)
 	{
-		UpdateBall(&balls[i], deltaTime);
+		UpdateBall(&balls[i], paddles, deltaTime);
 	}
 }
 
