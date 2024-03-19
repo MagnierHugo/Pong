@@ -66,7 +66,7 @@ bool HandleInput(struct Paddle paddles[2])
     SDL_Event event;
     while (SDL_PollEvent(&event) != 0)
     {
-        if (event.type == SDL_QUIT)
+        if (!CheckExit(event))
         {
             return false;
         }
