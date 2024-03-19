@@ -9,17 +9,21 @@ struct SDL {
 	int exitCode;
 };
 
-struct Game {
-	SDL_Rect leftPlayer;
-	SDL_Rect rightPlayer;
-	SDL_Rect ball;
+struct MovementVector {
+	int x;
+	int y;
+};
 
-	struct Color playerColor;
-	struct Color ballColor;
+struct GameObject {
+	char* id;
+	SDL_Rect rect;
+	struct Color color;
+	struct MovementVector movement;
+};
+
+struct Game {
+	struct GameObject gameObjects[50];
 
 	int leftPlayerScore;
 	int rightPlayerScore;
-
-	int playerSpeed;
-	int ballSpeed;
 };

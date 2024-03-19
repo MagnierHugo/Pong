@@ -61,18 +61,18 @@ bool CheckExit(SDL_Event event) {
     // Stop game if the right key is down
     switch (event.type) {
 
-    case SDL_KEYDOWN:
-        if (event.key.keysym.sym == SDLK_ESCAPE) {
+        case SDL_KEYDOWN:
+            if (event.key.keysym.sym == SDLK_ESCAPE) {
+                return false;
+            }
+            break;
+
+        case SDL_QUIT:
             return false;
-        }
-        break;
+            break;
 
-    case SDL_QUIT:
-        return false;
-        break;
-
-    default:
-        break;
+        default:
+            break;
     }
 
     return true;
