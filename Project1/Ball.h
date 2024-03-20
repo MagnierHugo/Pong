@@ -18,9 +18,9 @@ struct Ball
     int DirY;
     int Speed;
     struct Color Color;
-    float LastTimeTouchedPaddle;
+    bool Active;
 };
 
 SDL_Rect BallAsRect(struct Ball ball);
-void UpdateBalls(struct Ball* balls, int ballAmount, struct Paddle paddles[2], float deltaTime);
-void DrawBalls(SDL_Renderer* renderer, struct Ball* balls, int ballAmount);
+void UpdateBalls(struct Ball* balls, struct Paddle paddles[2], float deltaTime);
+void DrawBalls(SDL_Renderer* renderer, struct Ball* balls);

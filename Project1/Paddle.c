@@ -8,6 +8,7 @@
 #include "Color.h"
 
 #endif
+#include <stdio.h>
 
 
 struct Paddle
@@ -17,7 +18,7 @@ struct Paddle
 	int Width;
 	int Height;
 
-	int Speed;
+	float Speed;
 
 	struct Color Color;
 };
@@ -36,12 +37,13 @@ void UpdatePaddle(struct Paddle* paddle, float deltaTime, int inputY)
 		return;
 	}
 
-	paddle->Y += (int)(inputY * deltaTime * paddle->Speed);
+	printf("Was called with: %f\n", paddle->Speed);
+	paddle->Y += (inputY * deltaTime * paddle->Speed);
 }
 
 SDL_Rect PaddleAsRect(struct Paddle paddle)
 {
-	return (SDL_Rect) { paddle.X, paddle.Y, paddle.Width, paddle.Height };
+	return (SDL_Rect) { (int) paddle.X, (int) paddle.Y, paddle.Width, paddle.Height };
 }
 
 void DrawPaddles(SDL_Renderer* renderer, struct Paddle paddles[2])

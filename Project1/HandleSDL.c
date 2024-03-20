@@ -1,7 +1,9 @@
 #include <SDL.h>
+//#include <SDL_ttf.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include "SDLStruct.h"
+#include "Constants.h"
 
 int ErrorHandling(char* message, bool sdl, SDL_Window* window) {
 
@@ -27,7 +29,7 @@ struct SDL StartSDL() {
     //creer une fenetre avec SDL
     SDL_Window* window = SDL_CreateWindow(
         "Pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-        800, 600, SDL_WINDOW_SHOWN
+        SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN
     );
 
     if (window == NULL) {
@@ -43,6 +45,16 @@ struct SDL StartSDL() {
     if (renderer == NULL) {
         exitCode = ErrorHandling("Erreur creation rendu SDL\n", true, window);
     }
+
+    // Initialize SDL_ttf
+    if (TTF_Init() < 0) {
+        exitCode = ErrorHandling("initialisation du module police SDL\n", true, window);
+    }
+
+    // TTF_Font* font = TTF_OpenFont("arial.ttf", 28);
+    //if (font == NULL) {
+    //    exitCode = ErrorHandling("Failed to load font! SDL_ttf Error: %s\n", true, window);
+    //}
 
     return (struct SDL) { window, renderer, exitCode };
 }
@@ -62,17 +74,17 @@ bool CheckExit(SDL_Event event) {
         case SDL_KEYDOWN:
             if (event.key.keysym.sym == SDLK_ESCAPE)
             {
-                return false;
+                return true;
             }
             break;
 
         case SDL_QUIT:
-            return false;
+            return true;
             break;
 
         default:
             break;
     }
 
-    return true;
+    return false;
 }

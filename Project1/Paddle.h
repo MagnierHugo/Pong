@@ -13,10 +13,10 @@ struct Paddle
     int Y;
     int Width;
     int Height;
-    int Speed;
+    float Speed;
     struct Color Color;
 };
 
 void UpdatePaddle(struct Paddle* paddle, float deltaTime, int inputY);
-
+void DrawPaddles(SDL_Renderer* renderer, struct Paddle paddles[2]);
 SDL_Rect PaddleAsRect(struct Paddle paddle);

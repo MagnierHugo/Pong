@@ -12,77 +12,35 @@
 #include "HandleSDL.h"
 
 
-
-
-#pragma region Legacy SDL Handling
-
-int InitSDL()
-{
-    // Initialisation de la SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        printf("Erreur lors de l'initialisation de la SDL : %s\n", SDL_GetError());
-        return -1;
-    }
-
-    return 1;
-}
-
-SDL_Window* InitWindow()
-{
-    // Création de la fenêtre
-    SDL_Window* window = SDL_CreateWindow(
-        "PONG",
-        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, // screen pos (x, y)
-        SCREEN_WIDTH, SCREEN_HEIGHT, // screen width (w, h)
-        SDL_WINDOW_SHOWN | SDL_RENDERER_PRESENTVSYNC
-    );
-
-    return window;
-}
-
-SDL_Renderer* InitRenderer(SDL_Window* window)
-{
-    SDL_Renderer* renderer = SDL_CreateRenderer(
-        window,
-        -1,
-        SDL_RENDERER_ACCELERATED
-    );
-
-    return renderer;
-}
-
-#pragma endregion
-
 void WindowClear(SDL_Renderer* renderer)
 {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer); // more of a fill
 }
 
-bool HandleInput(struct Paddle paddles[2])
+bool HandleInput(struct Paddle paddles[2], float deltaTime)
 {
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
     SDL_Event event;
     while (SDL_PollEvent(&event) != 0)
     {
-        if (!CheckExit(event))
+        if (CheckExit(event))
         {
             return false;
         }
-
-        UpdatePaddle(&paddles[0], 1, keyState[SDL_SCANCODE_S] - keyState[SDL_SCANCODE_Z]);
-        UpdatePaddle(&paddles[1], 1, keyState[SDL_SCANCODE_DOWN] - keyState[SDL_SCANCODE_UP]);
     }
+
+    UpdatePaddle(&paddles[0], deltaTime, keyState[SDL_SCANCODE_S] - keyState[SDL_SCANCODE_Z]);
+    UpdatePaddle(&paddles[1], deltaTime, keyState[SDL_SCANCODE_DOWN] - keyState[SDL_SCANCODE_UP]);
     return true;
 }
 
 struct Paddle* InitPaddles()
 {
-    int paddleWidth = 10;
-    int paddleHeight = 80;
-    int paddleSpeed = 15;
-    int paddleOffsetFromWall = 30;
+    int paddleWidth = 25;
+    int paddleHeight = 170;
+    int paddleSpeed = 750;
+    int paddleOffsetFromWall = 100;
 
     struct Paddle* paddles = malloc(2 * sizeof(struct Paddle));
     if (paddles == NULL) {
@@ -91,7 +49,7 @@ struct Paddle* InitPaddles()
     }
     paddles[0] = (struct Paddle){
         paddleOffsetFromWall,
-        SCREEN_HEIGHT / 2 - paddleHeight / 2, // half the height of the screen - half the paddle size
+        SCREEN_HEIGHT / 2 - paddleHeight / 2,
         paddleWidth,
         paddleHeight,
         paddleSpeed,
@@ -100,7 +58,7 @@ struct Paddle* InitPaddles()
 
     paddles[1] = (struct Paddle){
         SCREEN_WIDTH - paddleOffsetFromWall - paddleWidth,
-        SCREEN_HEIGHT / 2 - paddleHeight / 2, // half the height of the screen - half the paddle size
+        SCREEN_HEIGHT / 2 - paddleHeight / 2,
         paddleWidth,
         paddleHeight,
         paddleSpeed,
@@ -110,9 +68,31 @@ struct Paddle* InitPaddles()
     return paddles;
 }
 
-struct Ball InitBall()
+struct Ball* InitBalls(int side)
 {
+    struct Ball* balls = (struct Ball*) malloc(MAX_BALL_AMOUNT * sizeof(struct Ball));
+    if (balls == NULL) {
+        printf("The memory allocation for the balls failed\n");
+        return NULL;
+    }
 
+    srand(time(NULL));
+    for (int i = 0; i < MAX_BALL_AMOUNT; i++)
+    {
+
+        balls[i] = (struct Ball){
+                SCREEN_WIDTH / 2 - 25,
+                SCREEN_HEIGHT / 2 - 25,
+                50, // size
+                side == 0 ? RdmInt(-1, 1, true) : side > 0 ? 1 : -1,
+                RdmInt(-1, 1, true),
+                500,
+                (struct Color) { RdmInt(0, 255, false), RdmInt(0, 255, false), RdmInt(0, 255, false), 255},
+                i == 0 // only the first ball shoud be active
+        };
+    }
+
+    return balls;
 }
 
 int RdmInt(int min, int max, bool nonZero)
@@ -128,63 +108,38 @@ int RdmInt(int min, int max, bool nonZero)
 
 int main(int argc, char* argv[])
 {
-
     struct SDL sdl = StartSDL();
     if (sdl.exitCode == -1) { return -1; }
 
     struct Paddle* paddles = InitPaddles();
-
     if (paddles == NULL) { return -1; }
-    srand(time(NULL));
 
-    int ballAmount = 1;
-    //printf("Enter the number of balls: ");
-    //int _ = scanf("%d", &ballAmount);
+    struct  Ball* balls = InitBalls(0);
+    if (balls == NULL) { return -1; }
 
-    struct Ball* balls = (struct Ball*) malloc(ballAmount * sizeof(struct Ball));
-    if (balls == NULL) {
-        printf("Memory allocation failed.\n");
-        return -1;
-    }
-
-    for (int i = 0; i < ballAmount; i++)
-    {
-        //balls[i] = (struct Ball){
-        //    RdmInt(0, SCREEN_WIDTH - 100, false), // - max size for them not to be stuck on walls
-        //    RdmInt(0, SCREEN_HEIGHT - 100, false),
-        //    RdmInt(10, 100, false), // size
-        //    RdmInt(-10, 10, true),
-        //    RdmInt(-10, 10, true),
-        //    RdmInt(1, 2, false),
-        //    (struct Color) { RdmInt(0, 255, false), RdmInt(0, 255, false), RdmInt(0, 255, false), 255 }
-        //};
-
-        balls[i] = (struct Ball){
-                SCREEN_WIDTH / 2 - 25, // - max size for them not to be stuck on walls
-                SCREEN_HEIGHT / 2 - 25,
-                50, // size
-                RdmInt(-10, 10, true),
-                RdmInt(-10, 10, true),
-                1,
-                (struct Color) { RdmInt(0, 255, false), RdmInt(0, 255, false), RdmInt(0, 255, false), 255 }
-            };
-    }
+    int score[2] = { 0, 0 };
+    
 
     WindowClear(sdl.renderer);
-    DrawBalls(sdl.renderer, balls, ballAmount);
+    DrawBalls(sdl.renderer, balls);
     DrawPaddles(sdl.renderer, paddles);
     SDL_RenderPresent(sdl.renderer); // update display
-    SDL_Delay(5000);
+    SDL_Delay(1500);
 
+    float currentTime = SDL_GetTicks();
+    float deltaTime;
     bool continueRunning = true;
     while (continueRunning)
     {
-        continueRunning = HandleInput(paddles);
+        deltaTime = (SDL_GetTicks() - currentTime) / 1000;
+        currentTime = SDL_GetTicks();
+
+        continueRunning = HandleInput(paddles, deltaTime);
 
 
-        UpdateBalls(balls, ballAmount, paddles, 1);
+        UpdateBalls(balls, paddles, deltaTime);
         WindowClear(sdl.renderer);
-        DrawBalls(sdl.renderer, balls, ballAmount);
+        DrawBalls(sdl.renderer, balls);
         DrawPaddles(sdl.renderer, paddles);
         SDL_RenderPresent(sdl.renderer); // update display
         SDL_Delay(FRAMERATE); 

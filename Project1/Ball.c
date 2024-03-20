@@ -26,27 +26,31 @@ struct Ball
 
 	struct Color Color;
 
-	float LastTimeTouchedPaddle;
+	bool Active;
 };
 
-void HandleCollisionWithPaddle(struct Ball* ball, struct Paddle* relevantPaddle)
+static void HandleCollisionWithPaddle(struct Ball* ball, struct Paddle* relevantPaddle)
 {
-	ball->X *= -1;
+	ball->DirX *= -1;
 	// get the paddle -> ball vector and set it as new ball velocity
-	struct Vector2 paddleBallVec = { relevantPaddle->X - ball->X , relevantPaddle->Y - ball->Y };
+	struct Vector2 paddleBallVec = { relevantPaddle->X + relevantPaddle->Width / 2 - ball->X , relevantPaddle->Y - ball->Y };
 	Normalize(&paddleBallVec);
-	ball->X = paddleBallVec.X;
-	ball->Y = paddleBallVec.Y;
+	/*ball->DirX = paddleBallVec.X;
+	ball->DirY = paddleBallVec.Y;*/
 }
 
 static void UpdateBall(struct Ball* ball, struct Paddle paddles[2], float deltaTime)
 {
-	ball->X += (int)(ball->DirX * deltaTime * ball->Speed);
-	ball->Y += (int)(ball->DirY * deltaTime * ball->Speed);
+	ball->X += (ball->DirX * deltaTime * ball->Speed);
+	ball->Y += (ball->DirY * deltaTime * ball->Speed);
 
 	if (ball->X < SCREEN_HEIGHT / 4) // check wether the paddle is in a region somewhat relevant to the paddle before doing a billion checks
 	{
-		if (ball->X <= paddles[0].X + paddles[0].Width && paddles[0].Y <= ball->Y + ball->Size && paddles[0].Y + paddles[0].Height >= ball->Y) // collision with left paddle
+		if (
+			ball->X <= paddles[0].X + paddles[0].Width &&
+			paddles[0].Y <= ball->Y + ball->Size &&
+			paddles[0].Y + paddles[0].Height >= ball->Y
+			) // collision with left paddle
 		{
 			ball->X = paddles[0].X + paddles[0].Width + 1;
 			HandleCollisionWithPaddle(ball, &paddles[0]);
@@ -77,21 +81,21 @@ SDL_Rect BallAsRect(struct Ball ball)
 	return (SDL_Rect) { ball.X, ball.Y, ball.Size, ball.Size };
 }
 
-void UpdateBalls(struct Ball* balls, int ballAmount, struct Paddle paddles[2], float deltaTime)
+void UpdateBalls(struct Ball* balls, struct Paddle paddles[2], float deltaTime)
 {
-
-
-
-	for (int i = 0; i < ballAmount; i++)
+	for (int i = 0; i < MAX_BALL_AMOUNT; i++)
 	{
+		if (!balls[i].Active) { continue; }
 		UpdateBall(&balls[i], paddles, deltaTime);
 	}
 }
 
-void DrawBalls(SDL_Renderer* renderer, struct Ball* balls, int ballAmount)
+void DrawBalls(SDL_Renderer* renderer, struct Ball* balls)
 {
-	for (int i = 0; i < ballAmount; i++)
+	for (int i = 0; i < MAX_BALL_AMOUNT; i++)
 	{
+		if (!balls[i].Active) { continue; }
+
 		struct Ball curBall = balls[i];
 		SDL_Rect ballRect = BallAsRect(curBall);
 
