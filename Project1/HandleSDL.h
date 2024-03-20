@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include "SDLStruct.h"
 
-int ErrorHandling(char* message, bool sdl, SDL_Window* window);
+int ErrorHandling(char* message, bool sdl, SDL_Window* window, SDL_Renderer* renderer);
 
 struct SDL StartSDL();
 

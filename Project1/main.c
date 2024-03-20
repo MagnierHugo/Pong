@@ -15,8 +15,9 @@
 
 void WindowClear(SDL_Renderer* renderer, SDL_Texture* texture)
 {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    //SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer); // more of a fill
+    SDL_RenderCopy(renderer, texture, NULL, &(SDL_Rect){ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT });
 }
 
 bool HandleInput(struct Paddle paddles[2], float deltaTime)
@@ -45,7 +46,7 @@ struct Paddle* InitPaddles(SDL_Window* window, SDL_Renderer* renderer)
 
     struct Paddle* paddles = malloc(2 * sizeof(struct Paddle));
     if (paddles == NULL) {
-        ErrorHandling("The memory allocation for the paddles failed", true, window);
+        ErrorHandling("The memory allocation for the paddles failed", true, window, renderer);
     }
     paddles[0] = (struct Paddle){
         paddleOffsetFromWall,
@@ -75,7 +76,7 @@ struct Ball* InitBalls(SDL_Window* window, SDL_Renderer* renderer, int side)
     struct Ball* balls = (struct Ball*) malloc(MAX_BALL_AMOUNT * sizeof(struct Ball));
     if (balls == NULL) {
 
-        ErrorHandling("The memory allocation for the balls failed", true, window);
+        ErrorHandling("The memory allocation for the balls failed", true, window, renderer);
     }
 
     srand(time(NULL));
@@ -122,7 +123,6 @@ int main(int argc, char* argv[])
     if (balls == NULL) { return -1; }
 
     int score[2] = { 0, 0 };
-    
 
     SDL_Texture* windowTexture = CreateTexture(sdl.window, sdl.renderer, "885542.png");
 
@@ -137,13 +137,14 @@ int main(int argc, char* argv[])
     bool continueRunning = true;
     while (continueRunning)
     {
+        WindowClear(sdl.renderer, windowTexture);
+
         deltaTime = (SDL_GetTicks() - currentTime) / 1000;
         currentTime = SDL_GetTicks();
 
         continueRunning = HandleInput(paddles, deltaTime);
 
         UpdateBalls(balls, paddles, deltaTime, sdl.window);
-        WindowClear(sdl.renderer, windowTexture);
         DrawBalls(sdl.renderer, balls);
         DrawPaddles(sdl.renderer, paddles);
         SDL_RenderPresent(sdl.renderer); // update display

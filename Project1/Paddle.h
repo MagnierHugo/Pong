@@ -13,7 +13,7 @@ struct Paddle
     int Y;
     int Width;
     int Height;
-    int Speed;
+    float Speed;
     //struct Color Color;
     SDL_Texture* texture;
 };
