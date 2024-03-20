@@ -19,7 +19,8 @@ struct Paddle
 
 	int Speed;
 
-	struct Color Color;
+	//struct Color Color;
+	SDL_Texture* texture;
 };
 
 void UpdatePaddle(struct Paddle* paddle, float deltaTime, int inputY)
@@ -51,7 +52,8 @@ void DrawPaddles(SDL_Renderer* renderer, struct Paddle paddles[2])
 		struct Paddle curPaddle = paddles[i];
 		SDL_Rect paddleRect = PaddleAsRect(curPaddle);
 
-		SDL_SetRenderDrawColor(renderer, curPaddle.Color.R, curPaddle.Color.G, curPaddle.Color.B, curPaddle.Color.A);
-		SDL_RenderFillRect(renderer, &paddleRect);
+		//SDL_SetRenderDrawColor(renderer, curPaddle.Color.R, curPaddle.Color.G, curPaddle.Color.B, curPaddle.Color.A);
+		//SDL_RenderFillRect(renderer, &paddleRect);
+		SDL_RenderCopy(renderer, curPaddle.texture, NULL, &paddleRect);
 	}
 }

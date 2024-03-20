@@ -1,27 +1,26 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include "SDLStruct.h"
 
 int ErrorHandling(char* message, bool sdl, SDL_Window* window) {
 
-    printf("%s", message);
+    printf("%s\n", message);
     if (sdl) {
         SDL_Quit();
         if (window != NULL) {
             SDL_DestroyWindow(window);
         }
     }
-    return -1;
+    exit(EXIT_FAILURE);
 }
 
 struct SDL StartSDL() {
 
-    int exitCode = 0;
-
     // Initialisation SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        exitCode = ErrorHandling("Erreur SDL Init failed\n", false, NULL);
+        ErrorHandling("Erreur SDL Init failed\n", false, NULL);
     }
 
     //creer une fenetre avec SDL
@@ -31,7 +30,7 @@ struct SDL StartSDL() {
     );
 
     if (window == NULL) {
-        exitCode = ErrorHandling("Erreur creation fenêtre SDL\n", true, NULL);
+        ErrorHandling("Erreur creation fenêtre SDL\n", true, NULL);
     }
 
     //Creer rendu SDL
@@ -41,10 +40,10 @@ struct SDL StartSDL() {
     );
 
     if (renderer == NULL) {
-        exitCode = ErrorHandling("Erreur creation rendu SDL\n", true, window);
+        ErrorHandling("Erreur creation rendu SDL\n", true, window);
     }
 
-    return (struct SDL) { window, renderer, exitCode };
+    return (struct SDL) { window, renderer };
 }
 
 void CloseSDL(SDL_Window* window, SDL_Renderer* renderer) {

@@ -17,7 +17,8 @@ struct Ball
     int DirX;
     int DirY;
     int Speed;
-    struct Color Color;
+    //struct Color Color;
+    SDL_Texture* texture;
     float LastTimeTouchedPaddle;
 };
 
