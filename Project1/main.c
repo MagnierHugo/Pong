@@ -70,7 +70,7 @@ struct Paddle* InitPaddles(SDL_Window* window, SDL_Renderer* renderer)
     return paddles;
 }
 
-struct Ball* InitBalls(SDL_Window* window, int side)
+struct Ball* InitBalls(SDL_Window* window, SDL_Renderer* renderer, int side)
 {
     struct Ball* balls = (struct Ball*) malloc(MAX_BALL_AMOUNT * sizeof(struct Ball));
     if (balls == NULL) {
@@ -90,7 +90,7 @@ struct Ball* InitBalls(SDL_Window* window, int side)
                 RdmInt(-1, 1, true),
                 500,
                 //(struct Color) { RdmInt(0, 255, false), RdmInt(0, 255, false), RdmInt(0, 255, false), 255 },
-                CreateTexture(sdl.window, sdl.renderer, "Test_ball1.png"),
+                CreateTexture(window, renderer, "Test_ball1.png"),
                 i == 0 // only the first ball shoud be active
         };
     }
@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
 
     if (paddles == NULL) { return -1; }
 
-    struct  Ball* balls = InitBalls(sdl.window, 0);
+    struct  Ball* balls = InitBalls(sdl.window, sdl.renderer, 0);
     if (balls == NULL) { return -1; }
 
     int score[2] = { 0, 0 };
