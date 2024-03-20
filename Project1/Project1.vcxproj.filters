@@ -33,6 +33,9 @@
     <ClCompile Include="Vector2.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="textures.c">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h">
@@ -53,5 +56,25 @@
     <ClInclude Include="Vector2.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="textures.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="885542.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="mm.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="Sprite-0005.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="Test_ball1.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="wallpapersden.com_artistic-pixel-art-hd-space_1920x1080.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
   </ItemGroup>
 </Project>

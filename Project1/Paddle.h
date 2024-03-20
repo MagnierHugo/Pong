@@ -13,8 +13,9 @@ struct Paddle
     int Y;
     int Width;
     int Height;
-    float Speed;
-    struct Color Color;
+    int Speed;
+    //struct Color Color;
+    SDL_Texture* texture;
 };
 
 void UpdatePaddle(struct Paddle* paddle, float deltaTime, int inputY);

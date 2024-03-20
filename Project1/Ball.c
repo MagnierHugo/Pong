@@ -24,7 +24,8 @@ struct Ball
 	int DirY;
 	int Speed;
 
-	struct Color Color;
+	//struct Color Color;
+	SDL_Texture* texture;
 
 	bool Active;
 };
@@ -99,7 +100,8 @@ void DrawBalls(SDL_Renderer* renderer, struct Ball* balls)
 		struct Ball curBall = balls[i];
 		SDL_Rect ballRect = BallAsRect(curBall);
 
-		SDL_SetRenderDrawColor(renderer, curBall.Color.R, curBall.Color.G, curBall.Color.B, curBall.Color.A);
-		SDL_RenderFillRect(renderer, &ballRect);
+		//SDL_SetRenderDrawColor(renderer, curBall.Color.R, curBall.Color.G, curBall.Color.B, curBall.Color.A);
+		//SDL_RenderFillRect(renderer, &ballRect);
+		SDL_RenderCopy(renderer, curBall.texture, NULL, &ballRect);
 	}
 }

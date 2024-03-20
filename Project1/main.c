@@ -10,9 +10,10 @@
 #include "Paddle.h"
 #include "Constants.h"
 #include "HandleSDL.h"
+#include "textures.h"
 
 
-void WindowClear(SDL_Renderer* renderer)
+void WindowClear(SDL_Renderer* renderer, SDL_Texture* texture)
 {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer); // more of a fill
@@ -35,7 +36,7 @@ bool HandleInput(struct Paddle paddles[2], float deltaTime)
     return true;
 }
 
-struct Paddle* InitPaddles()
+struct Paddle* InitPaddles(SDL_Window* window, SDL_Renderer* renderer)
 {
     int paddleWidth = 25;
     int paddleHeight = 170;
@@ -44,8 +45,7 @@ struct Paddle* InitPaddles()
 
     struct Paddle* paddles = malloc(2 * sizeof(struct Paddle));
     if (paddles == NULL) {
-        printf("The memory allocation for the paddles failed");
-        return NULL;
+        ErrorHandling("The memory allocation for the paddles failed", true, window);
     }
     paddles[0] = (struct Paddle){
         paddleOffsetFromWall,
@@ -53,7 +53,8 @@ struct Paddle* InitPaddles()
         paddleWidth,
         paddleHeight,
         paddleSpeed,
-        (struct Color) {0, 0, 0, 255}
+        //(struct Color) {0, 0, 0, 255},
+        CreateTexture(window, renderer, "Sprite-0005.png")
     };
 
     paddles[1] = (struct Paddle){
@@ -62,18 +63,19 @@ struct Paddle* InitPaddles()
         paddleWidth,
         paddleHeight,
         paddleSpeed,
-        (struct Color) {0, 0, 0, 255}
+        //(struct Color) {0, 0, 0, 255},
+        CreateTexture(window, renderer, "Sprite-0005.png")
     };
 
     return paddles;
 }
 
-struct Ball* InitBalls(int side)
+struct Ball* InitBalls(SDL_Window* window, int side)
 {
     struct Ball* balls = (struct Ball*) malloc(MAX_BALL_AMOUNT * sizeof(struct Ball));
     if (balls == NULL) {
-        printf("The memory allocation for the balls failed\n");
-        return NULL;
+
+        ErrorHandling("The memory allocation for the balls failed", true, window);
     }
 
     srand(time(NULL));
@@ -87,7 +89,8 @@ struct Ball* InitBalls(int side)
                 side == 0 ? RdmInt(-1, 1, true) : side > 0 ? 1 : -1,
                 RdmInt(-1, 1, true),
                 500,
-                (struct Color) { RdmInt(0, 255, false), RdmInt(0, 255, false), RdmInt(0, 255, false), 255},
+                //(struct Color) { RdmInt(0, 255, false), RdmInt(0, 255, false), RdmInt(0, 255, false), 255 },
+                CreateTexture(sdl.window, sdl.renderer, "Test_ball1.png"),
                 i == 0 // only the first ball shoud be active
         };
     }
@@ -111,17 +114,20 @@ int main(int argc, char* argv[])
     struct SDL sdl = StartSDL();
     if (sdl.exitCode == -1) { return -1; }
 
-    struct Paddle* paddles = InitPaddles();
+    struct Paddle* paddles = InitPaddles(sdl.window, sdl.renderer);
+
     if (paddles == NULL) { return -1; }
 
-    struct  Ball* balls = InitBalls(0);
+    struct  Ball* balls = InitBalls(sdl.window, 0);
     if (balls == NULL) { return -1; }
 
     int score[2] = { 0, 0 };
     
 
-    WindowClear(sdl.renderer);
-    DrawBalls(sdl.renderer, balls);
+    SDL_Texture* windowTexture = CreateTexture(sdl.window, sdl.renderer, "885542.png");
+
+    WindowClear(sdl.renderer, windowTexture);
+    DrawBalls(sdl.renderer, balls, ballAmount);
     DrawPaddles(sdl.renderer, paddles);
     SDL_RenderPresent(sdl.renderer); // update display
     SDL_Delay(1500);
@@ -138,7 +144,7 @@ int main(int argc, char* argv[])
 
 
         UpdateBalls(balls, paddles, deltaTime);
-        WindowClear(sdl.renderer);
+        WindowClear(sdl.renderer, windowTexture);
         DrawBalls(sdl.renderer, balls);
         DrawPaddles(sdl.renderer, paddles);
         SDL_RenderPresent(sdl.renderer); // update display
@@ -146,6 +152,7 @@ int main(int argc, char* argv[])
     }
 
     // Fermeture de la fenêtre et de la SDL
+    //DestroyTextures({ paddles[] });
     SDL_DestroyRenderer(sdl.renderer);
     SDL_DestroyWindow(sdl.window);
     SDL_Quit();
