@@ -4,8 +4,8 @@
 #include "pong.h"
 
 
-bool CheckZ(struct PressedKey key) {
+bool KeyCheck(struct PressedKey key, SDL_Keycode keycode) {
 
-	if (key.keyCode == SDLK_z && key.isPressed == true) return true;
+	if (key.keyCode == keycode && key.isPressed == true) return true;
 	return false;
 }

@@ -2,8 +2,6 @@
 #include <SDL.h>
 #include <stdbool.h>
 
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGTH = 600;
 
 struct Color { int R, G, B, A; };
 
@@ -11,6 +9,8 @@ struct SDL {
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 };
+
+struct Sides { bool UP, Down, Right, Left; };
 
 struct MovementVector {
 	int x;

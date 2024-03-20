@@ -73,6 +73,10 @@ static void ObjectsMovement(struct Game game) {
 
 struct Game GameSetup(SDL_Window* window, SDL_Renderer* renderer) {
 
+	const int WINDOW_WIDTH;
+	const int WINDOW_HEIGTH;
+	SDL_GetWindowSize(window, WINDOW_WIDTH, WINDOW_HEIGTH);
+
 	game.gameObjects[0] = (struct GameObject){
 		"Player", "LeftPlayer",
 		(SDL_Rect){ 50, 100, 20, 50 },
