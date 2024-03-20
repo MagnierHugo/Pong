@@ -128,40 +128,18 @@ int RdmInt(int min, int max, bool nonZero)
 
 int main(int argc, char* argv[])
 {
- 
-    #pragma region Legacy SDL
-
-    /*if (InitSDL() < 0) { return -1; }
-    SDL_Window* window = InitWindow();
-    if (window == NULL)
-    {
-        printf("Erreur lors de la création de la fenêtre : %s\n", SDL_GetError());
-        SDL_Quit();
-        return -1;
-    }
-    SDL_Renderer* renderer = InitRenderer(window);
-    if (renderer == NULL)
-    {
-        printf("Erreur creation rendu SDL\n");
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-    }*/
-
-#pragma endregion
 
     struct SDL sdl = StartSDL();
     if (sdl.exitCode == -1) { return -1; }
+
     struct Paddle* paddles = InitPaddles();
 
-    if (paddles == NULL)
-    {
-        return -1;
-    }
+    if (paddles == NULL) { return -1; }
     srand(time(NULL));
 
-    int ballAmount;
-    printf("Enter the number of balls: ");
-    int _ = scanf("%d", &ballAmount);
+    int ballAmount = 1;
+    //printf("Enter the number of balls: ");
+    //int _ = scanf("%d", &ballAmount);
 
     struct Ball* balls = (struct Ball*) malloc(ballAmount * sizeof(struct Ball));
     if (balls == NULL) {
@@ -171,16 +149,32 @@ int main(int argc, char* argv[])
 
     for (int i = 0; i < ballAmount; i++)
     {
+        //balls[i] = (struct Ball){
+        //    RdmInt(0, SCREEN_WIDTH - 100, false), // - max size for them not to be stuck on walls
+        //    RdmInt(0, SCREEN_HEIGHT - 100, false),
+        //    RdmInt(10, 100, false), // size
+        //    RdmInt(-10, 10, true),
+        //    RdmInt(-10, 10, true),
+        //    RdmInt(1, 2, false),
+        //    (struct Color) { RdmInt(0, 255, false), RdmInt(0, 255, false), RdmInt(0, 255, false), 255 }
+        //};
+
         balls[i] = (struct Ball){
-            RdmInt(0, SCREEN_WIDTH - 100, false), // - max size for them not to be stuck on walls
-            RdmInt(0, SCREEN_HEIGHT - 100, false),
-            RdmInt(10, 100, false), // size
-            RdmInt(-10, 10, true),
-            RdmInt(-10, 10, true),
-            RdmInt(1, 2, false),
-            (struct Color) { RdmInt(0, 255, false), RdmInt(0, 255, false), RdmInt(0, 255, false), 255 }
-        };
+                SCREEN_WIDTH / 2 - 25, // - max size for them not to be stuck on walls
+                SCREEN_HEIGHT / 2 - 25,
+                50, // size
+                RdmInt(-10, 10, true),
+                RdmInt(-10, 10, true),
+                1,
+                (struct Color) { RdmInt(0, 255, false), RdmInt(0, 255, false), RdmInt(0, 255, false), 255 }
+            };
     }
+
+    WindowClear(sdl.renderer);
+    DrawBalls(sdl.renderer, balls, ballAmount);
+    DrawPaddles(sdl.renderer, paddles);
+    SDL_RenderPresent(sdl.renderer); // update display
+    SDL_Delay(5000);
 
     bool continueRunning = true;
     while (continueRunning)

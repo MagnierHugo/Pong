@@ -18,6 +18,7 @@ struct Ball
     int DirY;
     int Speed;
     struct Color Color;
+    float LastTimeTouchedPaddle;
 };
 
 SDL_Rect BallAsRect(struct Ball ball);

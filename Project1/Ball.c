@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <stdbool.h>
 
 #include "Constants.h"
 
@@ -8,6 +9,9 @@
 #include "Color.h"
 
 #endif
+
+#include "Paddle.h"
+#include "Vector2.h"
 
 
 struct Ball
@@ -21,14 +25,44 @@ struct Ball
 	int Speed;
 
 	struct Color Color;
+
+	float LastTimeTouchedPaddle;
 };
+
+void HandleCollisionWithPaddle(struct Ball* ball, struct Paddle* relevantPaddle)
+{
+	ball->X *= -1;
+	// get the paddle -> ball vector and set it as new ball velocity
+	struct Vector2 paddleBallVec = { relevantPaddle->X - ball->X , relevantPaddle->Y - ball->Y };
+	Normalize(&paddleBallVec);
+	ball->X = paddleBallVec.X;
+	ball->Y = paddleBallVec.Y;
+}
 
 static void UpdateBall(struct Ball* ball, struct Paddle paddles[2], float deltaTime)
 {
 	ball->X += (int)(ball->DirX * deltaTime * ball->Speed);
 	ball->Y += (int)(ball->DirY * deltaTime * ball->Speed);
 
-	if (ball->X + ball->Size >= SCREEN_WIDTH || ball->X <= 0)
+	if (ball->X < SCREEN_HEIGHT / 4) // check wether the paddle is in a region somewhat relevant to the paddle before doing a billion checks
+	{
+		if (ball->X <= paddles[0].X + paddles[0].Width && paddles[0].Y <= ball->Y + ball->Size && paddles[0].Y + paddles[0].Height >= ball->Y) // collision with left paddle
+		{
+			ball->X = paddles[0].X + paddles[0].Width + 1;
+			HandleCollisionWithPaddle(ball, &paddles[0]);
+		}
+	}
+	else if (ball->X + ball->Size > 3 * SCREEN_HEIGHT / 4)
+	{
+
+		if (ball->X + ball->Size >= paddles[1].X && paddles[1].Y <= ball->Y + ball->Size && paddles[1].Y + paddles[1].Height >= ball->Y) // collision with right paddle
+		{
+			ball->X = paddles[1].X - ball->Size - 1;
+			HandleCollisionWithPaddle(ball, &paddles[1]);
+		}
+	}
+
+	if (ball->X + ball->Size >= SCREEN_WIDTH || ball->X <= 0) // reach a side of the screen
 	{
 		ball->DirX *= -1;
 	}
