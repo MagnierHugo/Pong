@@ -36,7 +36,6 @@ static int HandleInputs(SDL_Event event, struct PressedKey pressedKeys[10], int 
 		{
 			if (event.key.keysym.sym == pressedKeys[keyIndex].keyCode)
 			{
-				printf("Key already existed");
 				pressedKeys[keyIndex].isPressed = true;
 				return nbrKeys;
 			}
@@ -72,10 +71,6 @@ static void ObjectsMovement(struct Game game) {
 }
 
 struct Game GameSetup(SDL_Window* window, SDL_Renderer* renderer) {
-
-	const int WINDOW_WIDTH;
-	const int WINDOW_HEIGTH;
-	SDL_GetWindowSize(window, WINDOW_WIDTH, WINDOW_HEIGTH);
 
 	game.gameObjects[0] = (struct GameObject){
 		"Player", "LeftPlayer",
