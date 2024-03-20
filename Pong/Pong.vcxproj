@@ -133,11 +133,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="game.c" />
+    <ClCompile Include="key_checks.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="movement.c" />
     <ClCompile Include="sdl_handling.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
+    <ClInclude Include="key_checks.h" />
+    <ClInclude Include="movement.h" />
     <ClInclude Include="pong.h" />
     <ClInclude Include="sdl_handling.h" />
   </ItemGroup>

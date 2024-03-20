@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 #include "pong.h"
@@ -11,8 +12,6 @@ int main(int argc, char* argv[]) {
     
     struct SDL sdl = StartSDL();
 
-    if (sdl.exitCode == -1) return -1;
-
     SDL_Window* window = sdl.window;
     SDL_Renderer* renderer = sdl.renderer;
 
@@ -20,5 +19,5 @@ int main(int argc, char* argv[]) {
 
     CloseSDL(window, renderer);
 
-    return 0;
+    exit(EXIT_SUCCESS);
 }

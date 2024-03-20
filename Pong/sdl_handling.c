@@ -1,11 +1,12 @@
 #include <SDL.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 #include "pong.h"
 
 
-int ErrorHandling(char* message, bool sdl, SDL_Window* window) {
+void ErrorHandling(char* message, bool sdl, SDL_Window* window) {
 
     printf("%s", message);
     if (sdl) {
@@ -14,7 +15,7 @@ int ErrorHandling(char* message, bool sdl, SDL_Window* window) {
             SDL_DestroyWindow(window);
         }
     }
-    return -1;
+    exit(EXIT_FAILURE);
 }
 
 void CloseSDL(SDL_Window* window, SDL_Renderer* renderer) {
@@ -26,11 +27,9 @@ void CloseSDL(SDL_Window* window, SDL_Renderer* renderer) {
 
 struct SDL StartSDL() {
 
-    int exitCode = 0;
-
     // Initialisation SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-       exitCode = ErrorHandling("Erreur SDL Init failed\n", false, NULL);
+       ErrorHandling("Erreur SDL Init failed\n", false, NULL);
     }
 
     //creer une fenetre avec SDL
@@ -40,7 +39,7 @@ struct SDL StartSDL() {
     );
 
     if (window == NULL) {
-        exitCode = ErrorHandling("Erreur creation fenêtre SDL\n", true, NULL);
+        ErrorHandling("Erreur creation fenêtre SDL\n", true, NULL);
     }
 
     //Creer rendu SDL
@@ -50,15 +49,15 @@ struct SDL StartSDL() {
     );
 
     if (renderer == NULL) {
-       exitCode = ErrorHandling("Erreur creation rendu SDL\n", true, window);
+       ErrorHandling("Erreur creation rendu SDL\n", true, window);
     }
 
-    return (struct SDL) { window, renderer, exitCode };
+    return (struct SDL) { window, renderer };
 }
 
 bool CheckExit(SDL_Event event) {
 
-    // Stop game if the right key is down
+    // Stop game if the right key is down or if the window is closed
     switch (event.type) {
 
         case SDL_KEYDOWN:
