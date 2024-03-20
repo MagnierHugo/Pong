@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
     SDL_Texture* windowTexture = CreateTexture(sdl.window, sdl.renderer, "885542.png");
 
     WindowClear(sdl.renderer, windowTexture);
-    DrawBalls(sdl.renderer, balls, ballAmount);
+    DrawBalls(sdl.renderer, balls);
     DrawPaddles(sdl.renderer, paddles);
     SDL_RenderPresent(sdl.renderer); // update display
     SDL_Delay(1500);
@@ -141,7 +141,6 @@ int main(int argc, char* argv[])
         currentTime = SDL_GetTicks();
 
         continueRunning = HandleInput(paddles, deltaTime);
-
 
         UpdateBalls(balls, paddles, deltaTime, sdl.window);
         WindowClear(sdl.renderer, windowTexture);
