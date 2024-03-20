@@ -37,7 +37,6 @@ void UpdatePaddle(struct Paddle* paddle, float deltaTime, int inputY)
 		return;
 	}
 
-	printf("Was called with: %f\n", paddle->Speed);
 	paddle->Y += (inputY * deltaTime * paddle->Speed);
 }
 

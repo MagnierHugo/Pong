@@ -30,7 +30,7 @@ bool HandleInput(struct Paddle paddles[2], float deltaTime)
         }
     }
 
-    UpdatePaddle(&paddles[0], deltaTime, keyState[SDL_SCANCODE_S] - keyState[SDL_SCANCODE_Z]);
+    UpdatePaddle(&paddles[0], deltaTime, keyState[SDL_SCANCODE_S] - keyState[SDL_SCANCODE_W]);
     UpdatePaddle(&paddles[1], deltaTime, keyState[SDL_SCANCODE_DOWN] - keyState[SDL_SCANCODE_UP]);
     return true;
 }
@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
         continueRunning = HandleInput(paddles, deltaTime);
 
 
-        UpdateBalls(balls, paddles, deltaTime);
+        UpdateBalls(balls, paddles, deltaTime, sdl.window);
         WindowClear(sdl.renderer);
         DrawBalls(sdl.renderer, balls);
         DrawPaddles(sdl.renderer, paddles);

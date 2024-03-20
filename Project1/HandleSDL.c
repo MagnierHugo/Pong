@@ -1,7 +1,9 @@
 #include <SDL.h>
 //#include <SDL_ttf.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 #include "SDLStruct.h"
 #include "Constants.h"
 
@@ -26,9 +28,10 @@ struct SDL StartSDL() {
         exitCode = ErrorHandling("Erreur SDL Init failed\n", false, NULL);
     }
 
+    srand(time(NULL));
     //creer une fenetre avec SDL
     SDL_Window* window = SDL_CreateWindow(
-        "Pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+        rand() % 2 == 0 ? "PING" : "PONG", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
         SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN
     );
 
@@ -47,9 +50,9 @@ struct SDL StartSDL() {
     }
 
     // Initialize SDL_ttf
-    if (TTF_Init() < 0) {
+    /*if (TTF_Init() < 0) {
         exitCode = ErrorHandling("initialisation du module police SDL\n", true, window);
-    }
+    }*/
 
     // TTF_Font* font = TTF_OpenFont("arial.ttf", 28);
     //if (font == NULL) {

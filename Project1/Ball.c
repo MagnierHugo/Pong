@@ -29,17 +29,18 @@ struct Ball
 	bool Active;
 };
 
-static void HandleCollisionWithPaddle(struct Ball* ball, struct Paddle* relevantPaddle)
+static void HandleCollisionWithPaddle(struct Ball* ball, struct Paddle* relevantPaddle, SDL_Window* window)
 {
 	ball->DirX *= -1;
 	// get the paddle -> ball vector and set it as new ball velocity
 	struct Vector2 paddleBallVec = { relevantPaddle->X + relevantPaddle->Width / 2 - ball->X , relevantPaddle->Y - ball->Y };
 	Normalize(&paddleBallVec);
+	SDL_SetWindowTitle(window, SDL_GetWindowTitle(window)[1] == 'O' ? "PING" : "PONG"); // knowing it s the only character iffering it s faster tço check for it directly
 	/*ball->DirX = paddleBallVec.X;
 	ball->DirY = paddleBallVec.Y;*/
 }
 
-static void UpdateBall(struct Ball* ball, struct Paddle paddles[2], float deltaTime)
+static void UpdateBall(struct Ball* ball, struct Paddle paddles[2], float deltaTime, SDL_Window* window)
 {
 	ball->X += (ball->DirX * deltaTime * ball->Speed);
 	ball->Y += (ball->DirY * deltaTime * ball->Speed);
@@ -52,8 +53,8 @@ static void UpdateBall(struct Ball* ball, struct Paddle paddles[2], float deltaT
 			paddles[0].Y + paddles[0].Height >= ball->Y
 			) // collision with left paddle
 		{
-			ball->X = paddles[0].X + paddles[0].Width + 1;
-			HandleCollisionWithPaddle(ball, &paddles[0]);
+			ball->X = paddles[0].X + paddles[0].Width + 1; // get it out of the paddle in order to avoid it glitching
+			HandleCollisionWithPaddle(ball, &paddles[0], window);
 		}
 	}
 	else if (ball->X + ball->Size > 3 * SCREEN_HEIGHT / 4)
@@ -62,18 +63,30 @@ static void UpdateBall(struct Ball* ball, struct Paddle paddles[2], float deltaT
 		if (ball->X + ball->Size >= paddles[1].X && paddles[1].Y <= ball->Y + ball->Size && paddles[1].Y + paddles[1].Height >= ball->Y) // collision with right paddle
 		{
 			ball->X = paddles[1].X - ball->Size - 1;
-			HandleCollisionWithPaddle(ball, &paddles[1]);
+			HandleCollisionWithPaddle(ball, &paddles[1], window);
 		}
 	}
 
-	if (ball->X + ball->Size >= SCREEN_WIDTH || ball->X <= 0) // reach a side of the screen
+	if (ball->Y + ball->Size >= SCREEN_HEIGHT) // collide on the bottom border
+	{
+		ball->Y = SCREEN_HEIGHT - ball->Size - 1; // get it out of the border in order to avoid it glitching
+		ball->DirY *= -1;
+	}
+	else if (ball->Y <= 0) // collide on the top border
+	{
+		ball->DirY *= -1; // get it out of the border in order to avoid it glitching
+		ball->Y = 1;
+	}
+
+	if (ball->X + ball->Size >= SCREEN_WIDTH) // collide on the right border
 	{
 		ball->DirX *= -1;
 	}
-	if (ball->Y + ball->Size >= SCREEN_HEIGHT || ball->Y <= 0)
+	else if (ball->X <= 0) // collide on the left border
 	{
-		ball->DirY *= -1;
+		ball->DirX *= -1;
 	}
+
 }
 
 SDL_Rect BallAsRect(struct Ball ball)
@@ -81,12 +94,12 @@ SDL_Rect BallAsRect(struct Ball ball)
 	return (SDL_Rect) { ball.X, ball.Y, ball.Size, ball.Size };
 }
 
-void UpdateBalls(struct Ball* balls, struct Paddle paddles[2], float deltaTime)
+void UpdateBalls(struct Ball* balls, struct Paddle paddles[2], float deltaTime, SDL_Window* window)
 {
 	for (int i = 0; i < MAX_BALL_AMOUNT; i++)
 	{
 		if (!balls[i].Active) { continue; }
-		UpdateBall(&balls[i], paddles, deltaTime);
+		UpdateBall(&balls[i], paddles, deltaTime, window);
 	}
 }
 

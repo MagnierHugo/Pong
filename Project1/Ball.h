@@ -22,5 +22,5 @@ struct Ball
 };
 
 SDL_Rect BallAsRect(struct Ball ball);
-void UpdateBalls(struct Ball* balls, struct Paddle paddles[2], float deltaTime);
+void UpdateBalls(struct Ball* balls, struct Paddle paddles[2], float deltaTime, SDL_Window* window);
 void DrawBalls(SDL_Renderer* renderer, struct Ball* balls);
