@@ -1,13 +1,7 @@
 #include <SDL.h>
 
 #include "Constants.h"
-
-#ifndef COLOR
-
-#define COLOR
 #include "Color.h"
-
-#endif
 
 struct Ball
 {
@@ -23,5 +17,5 @@ struct Ball
 };
 
 SDL_Rect BallAsRect(struct Ball ball);
-void UpdateBalls(struct Ball* balls, struct Paddle paddles[2], float deltaTime, SDL_Window* window);
+int UpdateBalls(struct Scene scene, float deltaTime);
 void DrawBalls(SDL_Renderer* renderer, struct Ball* balls);

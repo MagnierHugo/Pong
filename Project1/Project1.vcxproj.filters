@@ -33,6 +33,12 @@
     <ClCompile Include="Vector2.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Utility.c">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClCompile>
     <ClCompile Include="textures.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -54,6 +60,12 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSummary.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="textures.h">

@@ -1,14 +1,8 @@
 #include <SDL.h>
+#include <stdio.h>
 
 #include "Constants.h"
-
-#ifndef COLOR
-
-#define COLOR
 #include "Color.h"
-
-#endif
-#include <stdio.h>
 
 
 struct Paddle
