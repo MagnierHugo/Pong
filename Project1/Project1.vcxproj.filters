@@ -102,5 +102,11 @@
     <Media Include="Sound\DANCING.wav">
       <Filter>Fichiers de ressources</Filter>
     </Media>
+    <Media Include="Sound\HUGO.wav">
+      <Filter>Fichiers de ressources</Filter>
+    </Media>
+    <Media Include="Sound\Bounce.wav">
+      <Filter>Fichiers de ressources</Filter>
+    </Media>
   </ItemGroup>
 </Project>

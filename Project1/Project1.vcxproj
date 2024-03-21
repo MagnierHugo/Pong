@@ -167,7 +167,9 @@
     <Image Include="Image\wallpapersden.com_artistic-pixel-art-hd-space_1920x1080.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="Sound\Bounce.wav" />
     <Media Include="Sound\DANCING.wav" />
+    <Media Include="Sound\HUGO.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

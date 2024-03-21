@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -16,6 +17,7 @@
 #include "textures.h"
 #include "Music.h"
 
+#define song "Sound\\DANCING.wav"
 
 struct InputSummary HandleInput(struct Paddle paddles[2], float deltaTime, bool screenWrapping)
 {
@@ -174,6 +176,12 @@ int main(int argc, char* argv[])
     struct InputSummary gameSettings = { true, false }; // didn t find a more fitting name for it
     BeginningCountdown(scene, 3, windowTexture);
     float currentTime = SDL_GetTicks();
+
+    if (dance(song) != 0) {
+        printf("Une erreur lecture de la musique.\n");
+        return -1;
+    }
+
     do
     {
         WindowClear(scene.SDL.renderer, windowTexture);

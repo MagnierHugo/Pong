@@ -1,3 +1,3 @@
 #pragma once
 
-int dance();
+int dance(char songWAV[20]);

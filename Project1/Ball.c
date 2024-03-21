@@ -6,9 +6,10 @@
 #include "Paddle.h"
 #include "Color.h"
 #include "Vector2.h"
+#include "Music.h"
 
-
-
+#define bounce "Sound\\Bounce.wav"
+#define goal "Sound\\HUGO.wav"
 
 struct Ball
 {
@@ -33,6 +34,12 @@ static void HandleCollisionWithPaddle(struct Ball* ball, struct Paddle* relevant
 	// get the paddle -> ball vector and set it as new ball velocity
 	struct Vector2 paddleBallVec = { relevantPaddle->X + relevantPaddle->Width / 2 - ball->X , relevantPaddle->Y - ball->Y };
 	Normalize(paddleBallVec);
+
+	if (dance(bounce) != 0) {
+		printf("Une erreur lecture de la musique.\n");
+		return -1;
+	}
+
 	SDL_SetWindowTitle(window, SDL_GetWindowTitle(window)[1] == 'o' ? "Ping" : "Pong"); // knowing it s the only character iffering it s faster to check for it directly
 	/*ball->DirX = paddleBallVec.X;
 	ball->DirY = paddleBallVec.Y;*/
@@ -81,8 +88,20 @@ static int UpdateBall(struct Ball* ball, struct Paddle paddles[2], float deltaTi
 		
 	} // get it out of the border in order to avoid it glitching and change trajectory
 	
-	if (ball->X + ball->Size >= SCREEN_WIDTH) { return -1; } // collide on the right border
-	if (ball->X <= 0) { return 1; } // collide on the left border
+	if (ball->X + ball->Size >= SCREEN_WIDTH) { // collide on the right border
+		if (dance(goal) != 0) {
+			printf("Une erreur lecture de la musique.\n");
+			return -1;
+		}
+		return 1;
+	} 
+	if (ball->X <= 0) { // collide on the left border
+		if (dance(goal) != 0) {
+			printf("Une erreur lecture de la musique.\n");
+			return -1;
+		}
+		return 1; 
+	} 
 	return 0;
 }
 
