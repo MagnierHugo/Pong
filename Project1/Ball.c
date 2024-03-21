@@ -62,8 +62,6 @@ static void HandleCollisionWithPaddle(struct Ball* ball, struct Paddle* relevant
 	}
 
 	SDL_SetWindowTitle(window, SDL_GetWindowTitle(window)[1] == 'o' ? "Ping" : "Pong"); // knowing it s the only character iffering it s faster to check for it directly
-	/*ball->DirX = paddleBallVec.X;
-	ball->DirY = paddleBallVec.Y;*/
 }
 
 void CollisionWithPaddles(struct Ball* ball, struct Paddle paddles[2], SDL_Window* window)
