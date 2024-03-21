@@ -14,3 +14,6 @@
 #define BALL_INITIAL_SPEED 500
 #define BALL_SPEED_INCREMENT 50
 
+#define song "Sound\\DANCING.wav"
+#define bounce "Sound\\Bounce.wav"
+#define goal "Sound\\HUGO.wav"

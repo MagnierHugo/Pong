@@ -18,5 +18,6 @@ struct Ball
 };
 
 SDL_Rect BallAsRect(struct Ball ball);
-void CollisionWithPaddles(struct Ball* ball, struct Paddle paddles[2], SDL_Window* window);
+void CollisionWithPaddles(struct Ball* ball, struct Paddle paddles[2], struct SDL sdlStruct);
 void DrawBalls(SDL_Renderer* renderer, struct Ball* balls);
+int CheckGoal(struct Ball* ball, struct SDL sdlStruct);

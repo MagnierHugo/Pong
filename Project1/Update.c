@@ -29,13 +29,13 @@ void UpdatePaddle(struct Paddle* paddle, float deltaTime, int inputY)
 
 static int UpdateBall(
 	struct Ball* ball, struct Paddle paddles[2],
-	float deltaTime, SDL_Window* window, bool screenWrapping
+	float deltaTime, struct SDL sdlStruct, bool screenWrapping
 )
 {
 	ball->X += (ball->DirX * deltaTime * ball->Speed);
 	ball->Y += (ball->DirY * deltaTime * ball->Speed);
 
-	CollisionWithPaddles(ball, paddles, window);
+	CollisionWithPaddles(ball, paddles, sdlStruct);
 
 	if (ball->Y + ball->Size >= SCREEN_HEIGHT) {
 
@@ -60,21 +60,7 @@ static int UpdateBall(
 
 	} // get it out of the border in order to avoid it glitching and change trajectory
 
-	if (ball->X + ball->Size >= SCREEN_WIDTH) { // collide on the right border
-		if (dance(goal) != 0) {
-			printf("Une erreur lecture de HUGO\n");
-			return -1;
-		}
-		return 1;
-	}
-	if (ball->X <= 0) { // collide on the left border
-		if (dance(goal) != 0) {
-			printf("Une erreur lecture de HUGO\n");
-			return -1;
-		}
-		return 1;
-	}
-	return 0;
+	return CheckGoal(ball, sdlStruct);
 }
 
 static int UpdateBalls(struct Scene scene, float deltaTime)
@@ -86,7 +72,7 @@ static int UpdateBalls(struct Scene scene, float deltaTime)
 
 		someoneWon = UpdateBall(
 			&scene.Balls[i], scene.Paddles, deltaTime, 
-			scene.SDL.window, scene.ScreenWrappingActive
+			scene.SDL, scene.ScreenWrappingActive
 		);
 
 		if (someoneWon != 0) { return someoneWon; }

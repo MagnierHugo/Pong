@@ -7,9 +7,8 @@
 #include "Color.h"
 #include "Vector2.h"
 #include "Music.h"
+#include "HandleSDL.h"
 
-#define bounce "Sound\\Bounce.wav"
-#define goal "Sound\\HUGO.wav"
 
 struct Ball
 {
@@ -48,7 +47,10 @@ void DrawBalls(SDL_Renderer* renderer, struct Ball* balls)
 	}
 }
 
-static void HandleCollisionWithPaddle(struct Ball* ball, struct Paddle* relevantPaddle, SDL_Window* window)
+static void HandleCollisionWithPaddle(
+	struct Ball* ball, struct Paddle* relevantPaddle, 
+	struct SDL sdlStruct
+)
 {
 	ball->DirX *= -1;
 	ball->Speed += BALL_SPEED_INCREMENT;
@@ -57,14 +59,16 @@ static void HandleCollisionWithPaddle(struct Ball* ball, struct Paddle* relevant
 	Normalize(paddleBallVec);
 
 	if (dance(bounce) != 0) {
-		printf("Une erreur lecture de la musique.\n");
-		return -1;
+		ErrorHandling("Error while trying to read goal sound effect", sdlStruct);
 	}
 
-	SDL_SetWindowTitle(window, SDL_GetWindowTitle(window)[1] == 'o' ? "Ping" : "Pong"); // knowing it s the only character iffering it s faster to check for it directly
+	SDL_SetWindowTitle(sdlStruct.window, SDL_GetWindowTitle(sdlStruct.window)[1] == 'o' ? "Ping" : "Pong"); // knowing it s the only character iffering it s faster to check for it directly
 }
 
-void CollisionWithPaddles(struct Ball* ball, struct Paddle paddles[2], SDL_Window* window)
+void CollisionWithPaddles(
+	struct Ball* ball, struct Paddle paddles[2], 
+	struct SDL sdlStruct
+)
 {
 	if (
 		ball->X <= paddles[0].X + paddles[0].Width &&
@@ -73,7 +77,7 @@ void CollisionWithPaddles(struct Ball* ball, struct Paddle paddles[2], SDL_Windo
 		) // collision with left paddle
 	{
 		ball->X = paddles[0].X + paddles[0].Width + 1; // get it out of the paddle in order to avoid it glitching
-		HandleCollisionWithPaddle(ball, &paddles[0], window);
+		HandleCollisionWithPaddle(ball, &paddles[0], sdlStruct);
 	}
 	if (
 		ball->X + ball->Size >= paddles[1].X &&
@@ -82,6 +86,26 @@ void CollisionWithPaddles(struct Ball* ball, struct Paddle paddles[2], SDL_Windo
 		) // collision with right paddle
 	{
 		ball->X = paddles[1].X - ball->Size - 1;
-		HandleCollisionWithPaddle(ball, &paddles[1], window);
+		HandleCollisionWithPaddle(ball, &paddles[1], sdlStruct);
 	}
+}
+
+int CheckGoal(struct Ball* ball, struct SDL sdlStruct)
+{
+	if (ball->X + ball->Size >= SCREEN_WIDTH) { // collide on the right border
+		printf("Ici\n");
+		if (dance(goal) != 0) {
+			ErrorHandling("Error while trying to read goal sound effect", sdlStruct);
+			return -1;
+		}
+		return -1;
+	}
+	if (ball->X <= 0) { // collide on the left border
+		printf("Là\n");
+		if (dance(goal) != 0) {
+			ErrorHandling("Error while trying to read goal sound effect", sdlStruct);
+		}
+		return 1;
+	}
+	return 0;
 }

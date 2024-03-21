@@ -20,7 +20,6 @@
 #include "Update.h"
 #include "Music.h"
 
-#define song "Sound\\DANCING.wav"
 
 struct InputSummary HandleInput(struct Paddle paddles[2], float deltaTime, bool screenWrapping)
 {
@@ -112,8 +111,7 @@ int main(int argc, char* argv[])
     };
 
     if (dance(song) != 0) {
-        printf("Une erreur lecture de la musique.\n");
-        return -1;
+        ErrorHandling("Error while trying to read the music", state.scene.SDL);
     }
 
     BeginningCountdown(state.scene, 3, state.background);

@@ -60,7 +60,7 @@ static struct Ball* InitBalls(struct SDL sdlStruct)
                 RdmInt(-1, 1, true), // dir x
                 RdmInt(-1, 1, true), // dir y
                 BALL_INITIAL_SPEED, // speed
-                CreateTexture(sdlStruct, "Test_ball1.png"),
+                CreateTexture(sdlStruct, "Image\\ball.png"),
                 i == 0 // only the first ball shoud be active
         };
     }
