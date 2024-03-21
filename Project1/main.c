@@ -14,6 +14,7 @@
 #include "Utility.h"
 #include "InputSummary.h"
 #include "textures.h"
+#include "Music.h"
 
 
 struct InputSummary HandleInput(struct Paddle paddles[2], float deltaTime, bool screenWrapping)
@@ -61,7 +62,7 @@ struct Paddle* InitPaddles(struct SDL sdlStruct)
         PADDLE_WIDTH,
         PADDLE_HEIGHT,
         PADDLE_SPEED,
-        CreateTexture(sdlStruct.window, sdlStruct.renderer, "Sprite-0005.png")
+        CreateTexture(sdlStruct.window, sdlStruct.renderer, "Image\\Pad1.png")
     };
 
     paddles[1] = (struct Paddle){
@@ -70,7 +71,7 @@ struct Paddle* InitPaddles(struct SDL sdlStruct)
         PADDLE_WIDTH,
         PADDLE_HEIGHT,
         PADDLE_SPEED,
-        CreateTexture(sdlStruct.window, sdlStruct.renderer, "Sprite-0005.png")
+        CreateTexture(sdlStruct.window, sdlStruct.renderer, "Image\\Pad2.png")
     };
 
     return paddles;
@@ -94,7 +95,7 @@ struct Ball* InitBalls(struct SDL sdlStruct)
                 RdmInt(-1, 1, true), // dir x
                 RdmInt(-1, 1, true), // dir y
                 BALL_INITIAL_SPEED, // speed
-                CreateTexture(sdlStruct.window, sdlStruct.renderer, "Test_ball1.png"),
+                CreateTexture(sdlStruct.window, sdlStruct.renderer, "Image\\ball.png"),
                 i == 0 // only the first ball shoud be active
         };
     }
@@ -146,7 +147,7 @@ void ResetScene(struct Scene* currentScene, int whoWon)
             whoWon, // dir x
             RdmInt(-1, 1, true), // dir y
             BALL_INITIAL_SPEED, // speed
-             CreateTexture(currentScene->SDL.window, currentScene->SDL.renderer, "Test_ball1.png"),
+             CreateTexture(currentScene->SDL.window, currentScene->SDL.renderer, "Image\\ball.png"),
             i == 0 // active | only the first ball shoud be active
         
         };
@@ -165,7 +166,7 @@ void DrawScene(struct Scene currentScene, SDL_Texture* windowTexture)
 int main(int argc, char* argv[])
 {
     struct Scene scene = InitScene();
-    SDL_Texture* windowTexture = CreateTexture(scene.SDL.window, scene.SDL.renderer, "885542.png");
+    SDL_Texture* windowTexture = CreateTexture(scene.SDL.window, scene.SDL.renderer, "Image\\885542.png");
     int score[2] = { 0, 0 };
     
     float deltaTime;
@@ -202,8 +203,8 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+
 // sensitivity
-// comments for where sound 
 // change ball angle?
 // bonuses
 // particles

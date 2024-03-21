@@ -33,7 +33,7 @@ static void HandleCollisionWithPaddle(struct Ball* ball, struct Paddle* relevant
 	// get the paddle -> ball vector and set it as new ball velocity
 	struct Vector2 paddleBallVec = { relevantPaddle->X + relevantPaddle->Width / 2 - ball->X , relevantPaddle->Y - ball->Y };
 	Normalize(paddleBallVec);
-	SDL_SetWindowTitle(window, SDL_GetWindowTitle(window)[1] == 'o' ? "Ping" : "Pong"); // knowing it s the only character iffering it s faster tço check for it directly
+	SDL_SetWindowTitle(window, SDL_GetWindowTitle(window)[1] == 'o' ? "Ping" : "Pong"); // knowing it s the only character iffering it s faster to check for it directly
 	/*ball->DirX = paddleBallVec.X;
 	ball->DirY = paddleBallVec.Y;*/
 }

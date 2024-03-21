@@ -5,13 +5,13 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Fichiers d%27en-tête">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Fichiers de ressources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +40,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClCompile>
     <ClCompile Include="textures.c">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Music.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,22 +74,33 @@
     <ClInclude Include="textures.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Music.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="885542.png">
+    <Image Include="Image\885542.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="mm.png">
+    <Image Include="Image\mm.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="Sprite-0005.png">
+    <Image Include="Image\Pad2.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="Test_ball1.png">
+    <Image Include="Image\ball.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="wallpapersden.com_artistic-pixel-art-hd-space_1920x1080.jpg">
+    <Image Include="Image\wallpapersden.com_artistic-pixel-art-hd-space_1920x1080.jpg">
       <Filter>Fichiers de ressources</Filter>
     </Image>
+    <Image Include="Image\Pad1.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sound\DANCING.wav">
+      <Filter>Fichiers de ressources</Filter>
+    </Media>
   </ItemGroup>
 </Project>

@@ -74,8 +74,8 @@
     <LibraryPath>D:\Dev\SDL2-devel-2.30.1-VC\SDL2-2.30.1\lib\x64;E:\Cours\CoursC\SDL2-2.30.1\lib\x64;D:\Cours\CoursC\SDL2-2.30.1\lib\x64;$(LibraryPath)</LibraryPath>
     <IncludePath>D:\Dev\SDL2-devel-2.30.1-VC\SDL2-2.30.1\include;D:\Cours\CoursC\SDL2-2.30.1\include;E:\Cours\CoursC\SDL2-2.30.1\include;$(IncludePath)</IncludePath>
     <ExternalIncludePath>C:\Users\ariviale\Downloads\SDL2-devel-2.30.1-VC\SDL2-2.30.1\include;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>D:\Dev\SDL2-devel-2.30.1-VC\SDL2-2.30.1\lib\x64;E:\Cours\CoursC\SDL2-2.30.1\lib\x64;C:\Users\hmagnier\Downloads\SDL2-devel-2.30.1-VC\lib\x64;C:\Users\hmagnier\Downloads\SDL2_image-devel-2.8.2-VC\lib\x64;D:\Dev\SDL2_image-2.8.2\lib\x64;C:\Program Files\CodeBlocks\SDL2_image-2.8.2\lib\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>D:\Dev\SDL2-devel-2.30.1-VC\SDL2-2.30.1\include;E:\Cours\CoursC\SDL2-2.30.1\include;C:\Users\hmagnier\Downloads\SDL2-devel-2.30.1-VC\include;C:\Users\hmagnier\Downloads\SDL2_image-devel-2.8.2-VC\include;D:\Dev\SDL2_image-2.8.2\include;C:\Program Files\CodeBlocks\SDL2_image-2.8.2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\trist\Desktop\SDL2_mixer-2.8.0\lib\x64;C:\Users\trist\Desktop\SDL2_image-2.8.2\lib\x64;C:\Users\trist\Desktop\SDL2-2.30.1\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\trist\Desktop\SDL2-2.30.1\include;E:\Cours\CoursC\SDL2-2.30.1\include;C:\Users\hmagnier\Downloads\SDL2-devel-2.30.1-VC\include;C:\Users\trist\Desktop\SDL2_image-2.8.2\include;D:\Dev\SDL2_image-2.8.2\include;C:\Users\trist\Desktop\SDL2_mixer-2.8.0\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -115,7 +115,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -139,6 +139,7 @@
     <ClCompile Include="Color.h" />
     <ClCompile Include="HandleSDL.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="Music.c" />
     <ClCompile Include="Paddle.c" />
     <ClCompile Include="Scene.h" />
     <ClCompile Include="Utility.c" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="InputSummary.h" />
     <ClInclude Include="HandleSDL.h" />
+    <ClInclude Include="Music.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="SDLStruct.h" />
     <ClInclude Include="Utility.h" />
@@ -157,11 +159,15 @@
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="885542.png" />
-    <Image Include="mm.png" />
-    <Image Include="Sprite-0005.png" />
-    <Image Include="Test_ball1.png" />
-    <Image Include="wallpapersden.com_artistic-pixel-art-hd-space_1920x1080.jpg" />
+    <Image Include="Image\885542.png" />
+    <Image Include="Image\mm.png" />
+    <Image Include="Image\Pad2.png" />
+    <Image Include="Image\Pad1.png" />
+    <Image Include="Image\ball.png" />
+    <Image Include="Image\wallpapersden.com_artistic-pixel-art-hd-space_1920x1080.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sound\DANCING.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
