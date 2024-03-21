@@ -18,22 +18,6 @@ struct Paddle
 	SDL_Texture* texture;
 };
 
-void UpdatePaddle(struct Paddle* paddle, float deltaTime, int inputY)
-{
-	if (inputY > 0 && paddle->Y + paddle->Height >= SCREEN_HEIGHT)
-	{
-		paddle->Y = SCREEN_HEIGHT - paddle->Height;
-		return;
-	}
-
-	if (inputY < 0 && paddle->Y <= 0)
-	{
-		paddle->Y = 0;
-		return;
-	}
-
-	paddle->Y += (inputY * deltaTime * paddle->Speed);
-}
 
 SDL_Rect PaddleAsRect(struct Paddle paddle)
 {

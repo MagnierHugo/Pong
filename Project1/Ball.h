@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <stdbool.h>
 
 #include "Constants.h"
 #include "Color.h"
@@ -17,5 +18,5 @@ struct Ball
 };
 
 SDL_Rect BallAsRect(struct Ball ball);
-int UpdateBalls(struct Scene scene, float deltaTime);
+void CollisionWithPaddles(struct Ball* ball, struct Paddle paddles[2], SDL_Window* window);
 void DrawBalls(SDL_Renderer* renderer, struct Ball* balls);

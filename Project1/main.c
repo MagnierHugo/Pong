@@ -14,6 +14,9 @@
 #include "Utility.h"
 #include "InputSummary.h"
 #include "textures.h"
+#include "Init.h"
+#include "GameState.h"
+#include "Update.h"
 
 
 struct InputSummary HandleInput(struct Paddle paddles[2], float deltaTime, bool screenWrapping)
@@ -49,84 +52,17 @@ struct InputSummary HandleInput(struct Paddle paddles[2], float deltaTime, bool 
     return (struct InputSummary) { true, screenWrapping };
 }
 
-struct Paddle* InitPaddles(struct SDL sdlStruct)
+void BeginningCountdown(struct Scene scene, int fromWhat, SDL_Texture* background)
 {
-    struct Paddle* paddles = malloc(2 * sizeof(struct Paddle));
-    if (paddles == NULL) {
-        ErrorHandling("The memory allocation for the paddles failed", true, sdlStruct.window, sdlStruct.renderer);
-    }
-    paddles[0] = (struct Paddle){
-        PADDLE_OFFSET_FROM_WALL,
-        SCREEN_HEIGHT / 2 - PADDLE_HEIGHT / 2,
-        PADDLE_WIDTH,
-        PADDLE_HEIGHT,
-        PADDLE_SPEED,
-        CreateTexture(sdlStruct.window, sdlStruct.renderer, "Sprite-0005.png")
-    };
-
-    paddles[1] = (struct Paddle){
-        SCREEN_WIDTH - PADDLE_OFFSET_FROM_WALL - PADDLE_WIDTH,
-        SCREEN_HEIGHT / 2 - PADDLE_HEIGHT / 2,
-        PADDLE_WIDTH,
-        PADDLE_HEIGHT,
-        PADDLE_SPEED,
-        CreateTexture(sdlStruct.window, sdlStruct.renderer, "Sprite-0005.png")
-    };
-
-    return paddles;
-}
-
-struct Ball* InitBalls(struct SDL sdlStruct)
-{
-    struct Ball* balls = malloc(MAX_BALL_AMOUNT * sizeof(struct Ball));
-    if (balls == NULL) {
-
-        ErrorHandling("The memory allocation for the balls failed", true, sdlStruct.window, sdlStruct.renderer);
-    }
-
-    srand(time(NULL));
-    for (int i = 0; i < MAX_BALL_AMOUNT; i++)
-    {
-        balls[i] = (struct Ball){
-                SCREEN_WIDTH / 2 - BALL_SIZE / 2, // x pos
-                SCREEN_HEIGHT / 2 - BALL_SIZE / 2, // y pos
-                BALL_SIZE, // size
-                RdmInt(-1, 1, true), // dir x
-                RdmInt(-1, 1, true), // dir y
-                BALL_INITIAL_SPEED, // speed
-                CreateTexture(sdlStruct.window, sdlStruct.renderer, "Test_ball1.png"),
-                i == 0 // only the first ball shoud be active
-        };
-    }
-
-    return balls;
-}
-
-void BeginningCountdown(struct Scene scene, int fromWhat, SDL_Texture* windowTexture)
-{
-    for (int i = fromWhat; i > 0; i--)
-    {
-        WindowClear(scene.SDL.renderer, windowTexture);
+    //for (int i = fromWhat; i > 0; i--)
+    //{
+        WindowClear(scene.SDL.renderer, background);
         DrawBalls(scene.SDL.renderer, scene.Balls);
         DrawPaddles(scene.SDL.renderer, scene.Paddles);
         // render some texture with I as s second counter
         SDL_RenderPresent(scene.SDL.renderer); // update display
-        SDL_Delay(1000);
-    }
-}
-
-struct Scene InitScene()
-{
-    struct SDL sdl = StartSDL();
-    if (sdl.exitCode == -1) { return (struct Scene ){ NULL, NULL, NULL}; }
-
-    struct Paddle* paddles = InitPaddles(sdl);
-    if (paddles == NULL) { return (struct Scene) { NULL, NULL, NULL }; }
-
-    struct Ball* balls = InitBalls(sdl);
-    if (balls == NULL) { return (struct Scene) { NULL, NULL, NULL }; }
-
-    return (struct Scene) { balls, paddles, sdl };
+        SDL_Delay(fromWhat * 1000);
+    //}
 }
 
 void ResetScene(struct Scene* currentScene, int whoWon)
@@ -146,16 +82,16 @@ void ResetScene(struct Scene* currentScene, int whoWon)
             whoWon, // dir x
             RdmInt(-1, 1, true), // dir y
             BALL_INITIAL_SPEED, // speed
-             CreateTexture(currentScene->SDL.window, currentScene->SDL.renderer, "Test_ball1.png"),
+             CreateTexture(currentScene->SDL, "Test_ball1.png"),
             i == 0 // active | only the first ball shoud be active
         
         };
     }
 }
 
-void DrawScene(struct Scene currentScene, SDL_Texture* windowTexture)
+void DrawScene(struct Scene currentScene, SDL_Texture* background)
 {
-    WindowClear(currentScene.SDL.renderer, windowTexture);
+    WindowClear(currentScene.SDL.renderer, background);
     DrawBalls(currentScene.SDL.renderer, currentScene.Balls);
     DrawPaddles(currentScene.SDL.renderer, currentScene.Paddles);
     SDL_RenderPresent(currentScene.SDL.renderer); // update display
@@ -164,40 +100,19 @@ void DrawScene(struct Scene currentScene, SDL_Texture* windowTexture)
 
 int main(int argc, char* argv[])
 {
-    struct Scene scene = InitScene();
-    SDL_Texture* windowTexture = CreateTexture(scene.SDL.window, scene.SDL.renderer, "885542.png");
-    int score[2] = { 0, 0 };
-    
-    float deltaTime;
-    int someoneWon; // -1 -> left won | 1 right won | 0 no one won
-    struct InputSummary gameSettings = { true, false }; // didn t find a more fitting name for it
-    BeginningCountdown(scene, 3, windowTexture);
-    float currentTime = SDL_GetTicks();
-    do
-    {
-        WindowClear(scene.SDL.renderer, windowTexture);
+    struct GameState state = {
+        InitScene(), // scene
+        (struct InputSummary){ true, false }, // gameSettings
+        CreateTexture(state.scene.SDL, "885542.png"), // background
+        0, SDL_GetTicks(), // deltaTime and currentTime
+        0, { 0, 0 } // someoneWon and score
+    };
 
-        deltaTime = (SDL_GetTicks() - currentTime) / 1000;
-        currentTime = SDL_GetTicks();
+    BeginningCountdown(state.scene, 3, state.background);
 
-        gameSettings = HandleInput(scene.Paddles, deltaTime, gameSettings.ScreenWrappingActive);
-        scene.ScreenWrappingActive = gameSettings.ScreenWrappingActive;
-        someoneWon = UpdateBalls(scene, deltaTime);
+    Update(state);
 
-        DrawScene(scene, windowTexture);
-
-        if (someoneWon != 0)
-        {
-            score[someoneWon > 0 ? 1 : 0]++;
-            printf("%d : %d", score[0], score[1]);
-            BeginningCountdown(scene, 1, windowTexture);
-            ResetScene(&scene, someoneWon);
-            currentTime = SDL_GetTicks(); // make sure not to murder deltaTime
-        }
-
-    } while (gameSettings.ContinueRunning && score[0] < MAX_SCORE && score[1] < MAX_SCORE);
-
-    CloseSDL(scene);
+    CloseSDL(state);
 
     return 0;
 }

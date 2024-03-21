@@ -1,5 +1,5 @@
 #pragma once
 #include <SDL.h>
 
-SDL_Texture* CreateTexture(SDL_Window* window, SDL_Renderer* renderer, char* path);
-void DestroyTextures(SDL_Texture* texture[]);
+SDL_Texture* CreateTexture(struct SDL sdlStruct, char* path);
+void DestroyTextures(struct GameState state);

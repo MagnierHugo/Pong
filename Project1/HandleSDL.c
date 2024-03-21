@@ -8,16 +8,19 @@
 #include "SDLStruct.h"
 #include "Scene.h"
 #include "Constants.h"
+#include "textures.h"
+#include "GameState.h"
 
-int ErrorHandling(char* message, bool sdl, SDL_Window* window, SDL_Renderer* renderer) {
-
+int ErrorHandling(char* message, struct SDL sdlStruct) 
+{
     printf("%s\n", message);
-    if (sdl) {
-        if (window != NULL) {
-            if (renderer != NULL) {
-                SDL_DestroyRenderer(renderer);
+    if (&sdlStruct != &(struct SDL) { NULL, NULL }) {
+
+        if (sdlStruct.window != NULL) {
+            if (sdlStruct.renderer != NULL) {
+                SDL_DestroyRenderer(sdlStruct.renderer);
             }
-            SDL_DestroyWindow(window);
+            SDL_DestroyWindow(sdlStruct.window);
         }
         SDL_Quit();
     }
@@ -26,59 +29,53 @@ int ErrorHandling(char* message, bool sdl, SDL_Window* window, SDL_Renderer* ren
 
 struct SDL StartSDL()
 {
+    struct SDL sdlStruct = { NULL, NULL };
 
     // Initialisation SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        ErrorHandling("Erreur SDL Init failed", false, NULL, NULL);
+        ErrorHandling("Erreur SDL Init failed", sdlStruct);
     }
 
     srand(time(NULL));
     //creer une fenetre avec SDL
-    SDL_Window* window = SDL_CreateWindow(
+    sdlStruct.window = SDL_CreateWindow(
         rand() % 2 == 0 ? "Ping" : "Pong",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
         SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN
     );
 
-    if (window == NULL) {
-        ErrorHandling("Erreur creation fenêtre SDL", true, NULL, NULL);
+    if (sdlStruct.window == NULL) {
+        ErrorHandling("Erreur creation fenêtre SDL", sdlStruct);
     }
 
     //Creer rendu SDL
-    SDL_Renderer* renderer = SDL_CreateRenderer(
-        window, -1,
+    sdlStruct.renderer = SDL_CreateRenderer(
+        sdlStruct.window, -1,
         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
     );
 
-    if (renderer == NULL) {
-        ErrorHandling("Erreur creation rendu SDL", true, window, NULL);
+    if (sdlStruct.renderer == NULL) {
+        ErrorHandling("Erreur creation rendu SDL", sdlStruct);
     }
 
-    // Initialize SDL_ttf
-    /*if (TTF_Init() < 0) {
-        exitCode = ErrorHandling("initialisation du module police SDL\n", true, window);
-    }*/
-
-    // TTF_Font* font = TTF_OpenFont("arial.ttf", 28);
-    //if (font == NULL) {
-    //    exitCode = ErrorHandling("Failed to load font! SDL_ttf Error: %s\n", true, window);
-    //}
-
-    return (struct SDL) { window, renderer };
+    return sdlStruct;
 }
 
-void CloseSDL(struct Scene scene)
+void CloseSDL(struct GameState state)
 {
-
-    SDL_DestroyRenderer(scene.SDL.renderer);
-    SDL_DestroyWindow(scene.SDL.window);
+    DestroyTextures(state);
+    SDL_DestroyRenderer(state.scene.SDL.renderer);
+    SDL_DestroyWindow(state.scene.SDL.window);
     SDL_Quit();
 }
 
-void WindowClear(SDL_Renderer* renderer, SDL_Texture* texture)
+void WindowClear(SDL_Renderer* renderer, SDL_Texture* background)
 {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer); // more of a fill
     SDL_RenderClear(renderer); // more of a fill
-    SDL_RenderCopy(renderer, texture, NULL, &(SDL_Rect){ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT });
+    SDL_RenderCopy(
+        renderer, background, NULL,
+        &(SDL_Rect){ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT }
+    );
 }

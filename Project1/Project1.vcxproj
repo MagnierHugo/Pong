@@ -138,9 +138,11 @@
     <ClCompile Include="Ball.c" />
     <ClCompile Include="Color.h" />
     <ClCompile Include="HandleSDL.c" />
+    <ClCompile Include="Init.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Paddle.c" />
     <ClCompile Include="Scene.h" />
+    <ClCompile Include="Update.c" />
     <ClCompile Include="Utility.c" />
     <ClCompile Include="textures.c" />
     <ClCompile Include="Vector2.c" />
@@ -148,10 +150,14 @@
   <ItemGroup>
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="Init.h" />
     <ClInclude Include="InputSummary.h" />
     <ClInclude Include="HandleSDL.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="SDLStruct.h" />
+    <ClInclude Include="Update.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="textures.h" />
     <ClInclude Include="Vector2.h" />
