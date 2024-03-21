@@ -97,6 +97,21 @@
     <Image Include="Image\Pad1.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
+    <Image Include="Image\1.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="Image\2.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="Image\4.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="Image\5.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="Image\3.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sound\DANCING.wav">

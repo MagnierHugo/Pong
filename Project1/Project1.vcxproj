@@ -159,6 +159,11 @@
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Image\1.png" />
+    <Image Include="Image\2.png" />
+    <Image Include="Image\3.png" />
+    <Image Include="Image\4.png" />
+    <Image Include="Image\5.png" />
     <Image Include="Image\885542.png" />
     <Image Include="Image\mm.png" />
     <Image Include="Image\Pad2.png" />

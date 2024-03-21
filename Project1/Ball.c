@@ -90,14 +90,14 @@ static int UpdateBall(struct Ball* ball, struct Paddle paddles[2], float deltaTi
 	
 	if (ball->X + ball->Size >= SCREEN_WIDTH) { // collide on the right border
 		if (dance(goal) != 0) {
-			printf("Une erreur lecture de la musique.\n");
+			printf("Une erreur lecture de HUGO\n");
 			return -1;
 		}
 		return 1;
 	} 
 	if (ball->X <= 0) { // collide on the left border
 		if (dance(goal) != 0) {
-			printf("Une erreur lecture de la musique.\n");
+			printf("Une erreur lecture de HUGO\n");
 			return -1;
 		}
 		return 1; 
