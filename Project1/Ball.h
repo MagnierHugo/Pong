@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SDL.h>
 #include <stdbool.h>
 
@@ -12,7 +14,7 @@ struct Ball
     int DirX;
     int DirY;
     int Speed;
-    //struct Color Color;
+    
     SDL_Texture* texture;
     bool Active;
 };
@@ -20,4 +22,4 @@ struct Ball
 SDL_Rect BallAsRect(struct Ball ball);
 void CollisionWithPaddles(struct Ball* ball, struct Paddle paddles[2], struct SDL sdlStruct);
 void DrawBalls(SDL_Renderer* renderer, struct Ball* balls);
-int CheckGoal(struct Ball* ball, struct SDL sdlStruct);
+int CheckGoal(struct Ball* ball, struct Scene scene);

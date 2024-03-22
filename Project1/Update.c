@@ -31,13 +31,13 @@ void UpdatePaddle(struct Paddle* paddle, float deltaTime, int inputY)
 
 static int UpdateBall(
 	struct Ball* ball, struct Paddle paddles[2],
-	float deltaTime, struct SDL sdlStruct, bool screenWrapping
+	float deltaTime, struct Scene scene, bool screenWrapping
 )
 {
 	ball->X += (ball->DirX * deltaTime * ball->Speed);
 	ball->Y += (ball->DirY * deltaTime * ball->Speed);
 
-	CollisionWithPaddles(ball, paddles, sdlStruct);
+	CollisionWithPaddles(ball, paddles, scene.SDL);
 
 	if (ball->Y + ball->Size >= SCREEN_HEIGHT) {
 
@@ -62,7 +62,7 @@ static int UpdateBall(
 
 	} // get it out of the border in order to avoid it glitching and change trajectory
 
-	return CheckGoal(ball, sdlStruct);
+	return CheckGoal(ball, scene);
 }
 
 static int UpdateBalls(struct Scene scene, float deltaTime)
@@ -74,7 +74,7 @@ static int UpdateBalls(struct Scene scene, float deltaTime)
 
 		someoneWon = UpdateBall(
 			&scene.Balls[i], scene.Paddles, deltaTime, 
-			scene.SDL, scene.ScreenWrappingActive
+			scene, scene.ScreenWrappingActive
 		);
 
 		if (someoneWon != 0) { return someoneWon; }
@@ -84,9 +84,8 @@ static int UpdateBalls(struct Scene scene, float deltaTime)
 
 void Update(struct GameState state)
 {
+	state.currentTime = SDL_GetTicks();
     do {
-        WindowClear(state.scene.SDL.renderer, state.background);
-
         state.deltaTime = (SDL_GetTicks() - state.currentTime) / 1000;
         state.currentTime = SDL_GetTicks();
 
@@ -104,8 +103,8 @@ void Update(struct GameState state)
         if (state.someoneWon != 0) {
             state.score[state.someoneWon > 0 ? 1 : 0]++;
             printf("%d : %d\n", state.score[0], state.score[1]);
+			PreGame(state.scene, 1, state.background);
             ResetScene(&state.scene, state.someoneWon);
-            BeginningCountdown(state, 1);
             state.currentTime = SDL_GetTicks(); // make sure not to murder deltaTime
         }
 

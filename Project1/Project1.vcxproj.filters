@@ -51,6 +51,9 @@
     <ClCompile Include="Update.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.c">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
     <ClCompile Include="scoreUI.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -101,6 +104,9 @@
     <ClInclude Include="scoreUI.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Image\885542.png">
@@ -134,6 +140,9 @@
       <Filter>Fichiers de ressources</Filter>
     </Image>
     <Image Include="Image\3.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="Image\definetelyNotAMinecraftSprite.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>
