@@ -4,27 +4,11 @@
 #include "Scene.h"
 #include "Constants.h"
 #include "Paddle.h"
+#include "Particle.h"
 #include "Color.h"
 #include "Vector2.h"
 #include "Music.h"
 #include "HandleSDL.h"
-
-
-struct Ball
-{
-	int X;
-	int Y;
-	int Size;
-
-	int DirX;
-	int DirY;
-	int Speed;
-
-	//struct Color Color;
-	SDL_Texture* texture;
-
-	bool Active;
-};
 
 
 SDL_Rect BallAsRect(struct Ball ball)
@@ -55,8 +39,8 @@ static void HandleCollisionWithPaddle(
 	ball->DirX *= -1;
 	ball->Speed += BALL_SPEED_INCREMENT;
 	// get the paddle -> ball vector and set it as new ball velocity
-	struct Vector2 paddleBallVec = { relevantPaddle->X + relevantPaddle->Width / 2 - ball->X , relevantPaddle->Y - ball->Y };
-	Normalize(paddleBallVec);
+	// struct Vector2 paddleBallVec = { relevantPaddle->X + relevantPaddle->Width / 2 - ball->X , relevantPaddle->Y - ball->Y };
+	// Normalize(paddleBallVec);
 
 	PlaySound(bounce, sdlStruct);
 
@@ -88,14 +72,16 @@ void CollisionWithPaddles(
 	}
 }
 
-int CheckGoal(struct Ball* ball, struct SDL sdlStruct)
+int CheckGoal(struct Ball* ball, struct Scene scene)
 {
-	if (ball->X + ball->Size >= SCREEN_WIDTH) { // collide on the right border
+	if (ball->X + ball->Size >= SCREEN_WIDTH + OUT_OF_BOUNDS_THRESHOLD) { // left the screen to the right
 		PlaySound(goal, sdlStruct);
+		ParticlesBurst(scene.Particles, -1);
 		return -1;
 	}
-	if (ball->X <= 0) { // collide on the left border
+	if (ball->X <= -OUT_OF_BOUNDS_THRESHOLD) { //  left the screen to the left
 		PlaySound(goal, sdlStruct);
+		ParticlesBurst(scene.Particles, 1);
 		return 1;
 	}
 	return 0;

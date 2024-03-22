@@ -8,8 +8,10 @@
 #include <time.h>
 
 #include "Scene.h"
+#include "ScoreUI.h"
 #include "Ball.h"
 #include "Paddle.h"
+#include "Particle.h"
 #include "Constants.h"
 #include "HandleSDL.h"
 #include "Utility.h"
@@ -54,17 +56,30 @@ struct InputSummary HandleInput(struct Paddle paddles[2], float deltaTime, bool 
     return (struct InputSummary) { true, screenWrapping };
 }
 
-void BeginningCountdown(struct Scene scene, int fromWhat, SDL_Texture* background)
+void PreGame(struct GameState state, int fromWhat)
 {
-    //for (int i = fromWhat; i > 0; i--)
-    //{
-        WindowClear(scene.SDL.renderer, background);
-        DrawBalls(scene.SDL.renderer, scene.Balls);
-        DrawPaddles(scene.SDL.renderer, scene.Paddles);
-        // render some texture with I as s second counter
-        SDL_RenderPresent(scene.SDL.renderer); // update display
-        SDL_Delay(fromWhat * 1000);
-    //}
+    float deltaTime;
+    float currentTime = SDL_GetTicks();
+ 
+    float startTime = SDL_GetTicks();
+    while (startTime + fromWhat * 1000 > SDL_GetTicks())
+    {
+        deltaTime = (SDL_GetTicks() - currentTime) / 1000;
+        currentTime = SDL_GetTicks();
+
+        HandleInput(state.scene.Paddles, deltaTime, false);
+
+        UpdateParticles(state.scene.Particles, deltaTime);
+
+        WindowClear(state.scene.SDL.renderer, state.background);
+        DrawParticles(state.scene.Particles, state.scene.SDL.renderer, CreateTexture(state.scene.SDL, "Image\\definetelyNotAMinecraftSprite.png"));
+        DrawBalls(state.scene.SDL.renderer, state.scene.Balls);
+        DrawPaddles(state.scene.SDL.renderer, state.scene.Paddles);
+        AfficherScore(state.scene, state.score[0], state.score[1]);
+        SDL_RenderPresent(state.scene.SDL.renderer); // update display
+    }
+
+    KillParticles(state.scene.Particles);
 }
 
 void ResetScene(struct Scene* currentScene, int whoWon)
@@ -86,17 +101,18 @@ void ResetScene(struct Scene* currentScene, int whoWon)
             BALL_INITIAL_SPEED, // speed
             CreateTexture(currentScene->SDL, "Image\\ball.png"),
             i == 0 // active | only the first ball shoud be active
-        
         };
     }
 }
 
-void DrawScene(struct Scene currentScene, SDL_Texture* background)
+void DrawScene(struct GameState state)
 {
-    WindowClear(currentScene.SDL.renderer, background);
-    DrawBalls(currentScene.SDL.renderer, currentScene.Balls);
-    DrawPaddles(currentScene.SDL.renderer, currentScene.Paddles);
-    SDL_RenderPresent(currentScene.SDL.renderer); // update display
+    WindowClear(state.scene.SDL.renderer, state.background);
+    DrawParticles(state.scene.Particles, state.scene.SDL.renderer, CreateTexture(state.scene.SDL, "Image\\definetelyNotAMinecraftSprite.png"));
+    DrawBalls(state.scene.SDL.renderer, state.scene.Balls);
+    DrawPaddles(state.scene.SDL.renderer, state.scene.Paddles);
+    AfficherScore(state.scene, state.score[0], state.score[1]);
+    SDL_RenderPresent(state.scene.SDL.renderer); // update display
     SDL_Delay(FRAMERATE);
 }
 
@@ -112,7 +128,7 @@ int main(int argc, char* argv[])
 
     PlaySound(song, state.scene.SDL);
 
-    BeginningCountdown(state.scene, 3, state.background);
+    PreGame(state, 3);
 
     Update(state);
 

@@ -74,8 +74,8 @@
     <LibraryPath>D:\Dev\SDL2-devel-2.30.1-VC\SDL2-2.30.1\lib\x64;E:\Cours\CoursC\SDL2-2.30.1\lib\x64;D:\Cours\CoursC\SDL2-2.30.1\lib\x64;$(LibraryPath)</LibraryPath>
     <IncludePath>D:\Dev\SDL2-devel-2.30.1-VC\SDL2-2.30.1\include;D:\Cours\CoursC\SDL2-2.30.1\include;E:\Cours\CoursC\SDL2-2.30.1\include;$(IncludePath)</IncludePath>
     <ExternalIncludePath>C:\Users\ariviale\Downloads\SDL2-devel-2.30.1-VC\SDL2-2.30.1\include;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>D:\Dev\SDL2-2.30.1\lib\x64;D:\Dev\SDL2_mixer-2.8.0\lib\x64;D:\Dev\SDL2_image-2.8.2\lib\x64;C:\Users\trist\Desktop\SDL2_mixer-2.8.0\lib\x64;C:\Users\trist\Desktop\SDL2_image-2.8.2\lib\x64;C:\Users\trist\Desktop\SDL2-2.30.1\lib\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>D:\Dev\SDL2-2.30.1\include;D:\Dev\SDL2_mixer-2.8.0\include;D:\Dev\SDL2_image-2.8.2\include;E:\Cours\CoursC\SDL2-2.30.1\include;C:\Users\trist\Desktop\SDL2-2.30.1\include;C:\Users\trist\Desktop\SDL2_mixer-2.8.0\include;C:\Users\trist\Desktop\SDL2_image-2.8.2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Dev\SDL2-2.30.1\lib\x64;D:\Dev\SDL2_mixer-2.8.0\lib\x64;D:\Dev\SDL2_image-2.8.2\lib\x64;C:\Users\trist\Desktop\SDL2_mixer-2.8.0\lib\x64;C:\Users\trist\Desktop\SDL2_image-2.8.2\lib\x64;C:\Users\trist\Desktop\SDL2-2.30.1\lib\x64;C:\Program Files\CodeBlocks\SDL2_image-2.8.2\lib\x64;C:\Program Files\CodeBlocks\SDL2_mixer-2.8.0\lib\x64;C:\Program Files\CodeBlocks\SDL2-2.30.1\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Dev\SDL2-2.30.1\include;D:\Dev\SDL2_mixer-2.8.0\include;D:\Dev\SDL2_image-2.8.2\include;E:\Cours\CoursC\SDL2-2.30.1\include;C:\Users\trist\Desktop\SDL2-2.30.1\include;C:\Users\trist\Desktop\SDL2_mixer-2.8.0\include;C:\Users\trist\Desktop\SDL2_image-2.8.2\include;D:\Dev\SDL2-devel-2.30.1-VC\SDL2-2.30.1\include;C:\Program Files\CodeBlocks\SDL2_image-2.8.2\include;C:\Program Files\CodeBlocks\SDL2_mixer-2.8.0\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -144,6 +144,7 @@
     <ClCompile Include="Paddle.c" />
     <ClCompile Include="Particle.c" />
     <ClCompile Include="Scene.h" />
+    <ClCompile Include="scoreUI.c" />
     <ClCompile Include="Update.c" />
     <ClCompile Include="Utility.c" />
     <ClCompile Include="textures.c" />
@@ -159,6 +160,8 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="Music.h" />
     <ClInclude Include="Paddle.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="scoreUI.h" />
     <ClInclude Include="SDLStruct.h" />
     <ClInclude Include="Update.h" />
     <ClInclude Include="Utility.h" />
@@ -172,6 +175,7 @@
     <Image Include="Image\4.png" />
     <Image Include="Image\5.png" />
     <Image Include="Image\885542.png" />
+    <Image Include="Image\definetelyNotAMinecraftSprite.png" />
     <Image Include="Image\mm.png" />
     <Image Include="Image\Pad2.png" />
     <Image Include="Image\Pad1.png" />
