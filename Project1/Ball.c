@@ -75,12 +75,12 @@ void CollisionWithPaddles(
 int CheckGoal(struct Ball* ball, struct Scene scene)
 {
 	if (ball->X + ball->Size >= SCREEN_WIDTH + OUT_OF_BOUNDS_THRESHOLD) { // left the screen to the right
-		PlaySound(goal, sdlStruct);
+		PlaySound(goal, scene.SDL);
 		ParticlesBurst(scene.Particles, -1);
 		return -1;
 	}
 	if (ball->X <= -OUT_OF_BOUNDS_THRESHOLD) { //  left the screen to the left
-		PlaySound(goal, sdlStruct);
+		PlaySound(goal, scene.SDL);
 		ParticlesBurst(scene.Particles, 1);
 		return 1;
 	}
