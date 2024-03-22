@@ -69,7 +69,6 @@ void PreGame(struct GameState state, int fromWhat)
     {
         deltaTime = (SDL_GetTicks() - currentTime) / 1000;
         currentTime = SDL_GetTicks();
-
         HandleInput(state.scene.Paddles, deltaTime, false);
         UpdateParticles(state.scene.Particles, deltaTime);
         WindowClear(state.scene.SDL.renderer, state.background);
@@ -82,10 +81,11 @@ void PreGame(struct GameState state, int fromWhat)
                 "Image\\definetelyNotAMinecraftSprite.png"
             )
         );
-
         DrawBalls(state.scene.SDL.renderer, state.scene.Balls);
         DrawPaddles(state.scene.SDL.renderer, state.scene.Paddles);
+        //printf("6\n");
         AfficherScore(state.scene, state.score[0], state.score[1]);
+        //printf("7\n");
         SDL_RenderPresent(state.scene.SDL.renderer); // update display
     }
 
@@ -102,6 +102,7 @@ void ResetScene(struct Scene* currentScene, int whoWon)
 
     for (int i = 0; i < MAX_BALL_AMOUNT; i++)
     {
+        //if (i == 0) ParticlesBurst(currentScene->Particles, 0);
         currentScene->Balls[i] = (struct Ball){
             SCREEN_WIDTH / 2 - BALL_SIZE / 2, // x pos
             SCREEN_HEIGHT / 2 - BALL_SIZE / 2, // y pos

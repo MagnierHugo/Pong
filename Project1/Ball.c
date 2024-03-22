@@ -38,9 +38,10 @@ static void HandleCollisionWithPaddle(
 {
 	ball->DirX *= -1;
 	ball->Speed += BALL_SPEED_INCREMENT;
-	// get the paddle -> ball vector and set it as new ball velocity
-	// struct Vector2 paddleBallVec = { relevantPaddle->X + relevantPaddle->Width / 2 - ball->X , relevantPaddle->Y - ball->Y };
-	// Normalize(paddleBallVec);
+	if (ball->Speed > BALL_SPEED_THRESHOLD_TO_SHORTEN)
+	{
+		relevantPaddle->Height -= PADDLE_SHORTENING_AMOUNT;
+	}
 
 	PlaySound(bounce, sdlStruct);
 
@@ -57,6 +58,7 @@ void CollisionWithPaddles(
 {
 	if (
 		ball->X <= paddles[0].X + paddles[0].Width &&
+		!(ball->X < paddles[0].X) &&
 		paddles[0].Y <= ball->Y + ball->Size &&
 		paddles[0].Y + paddles[0].Height >= ball->Y
 		) // collision with left paddle
@@ -66,6 +68,7 @@ void CollisionWithPaddles(
 	}
 	if (
 		ball->X + ball->Size >= paddles[1].X &&
+		!(ball->X + ball->Size > paddles[1].X + paddles[1].Width) &&
 		paddles[1].Y <= ball->Y + ball->Size &&
 		paddles[1].Y + paddles[1].Height >= ball->Y
 		) // collision with right paddle

@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 
+#include "Bonus.h"
 #include "SDLStruct.h"
 #include "scoreUI.h"
 
@@ -11,6 +12,7 @@ struct Scene
     struct Paddle* Paddles;
     struct SDL SDL;
     struct Particle* Particles;
+    struct Bonus Bonus;
     struct Score* images;
     bool ScreenWrappingActive;
 };
