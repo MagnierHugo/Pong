@@ -8,6 +8,7 @@
 #include "Particle.h"
 #include "textures.h"
 #include "Scene.h"
+#include "scoreUI.h"
 
 static struct Paddle* InitPaddles(struct SDL sdlStruct)
 {
@@ -69,6 +70,51 @@ static struct Ball* InitBalls(struct SDL sdlStruct)
     return balls;
 }
 
+static struct Particle* InitParticles(struct SDL sdlStruct)
+{
+    struct Particle* particles = malloc(
+        MAX_PARTICLE_AMOUNT * sizeof(struct Particle)
+    );
+
+    if (particles == NULL) {
+        ErrorHandling(
+            "The memory allocation for the particles failed",
+            sdlStruct
+        );
+    }
+
+    for (int i = 0; i < MAX_PARTICLE_AMOUNT; i++)
+    {
+        particles[i] = (struct Particle){ 0, 0, 0, 0, 0, false };
+    }
+
+    return particles;
+}
+
+static struct Score* InitScore(struct SDL sdlStruct)
+{
+    struct Score* images = malloc(5 * sizeof(struct Score));
+
+    if (images == NULL) {
+        ErrorHandling(
+            "The memory allocation for the images failed",
+            sdlStruct
+        );
+    }
+
+    char* paths[5] = {
+        "Image\\1.png", "Image\\2.png", "Image\\3.png",
+        "Image\\4.png", "Image\\5.png"
+    };
+
+    for (int i = 0; i < 5; i++)
+    {
+        images[i] = (struct Score){ CreateTexture(sdlStruct, paths[i])};
+    }
+
+    return images;
+}
+
 struct Scene InitScene()
 {
     struct SDL sdl = StartSDL();
@@ -77,9 +123,9 @@ struct Scene InitScene()
 
     struct Ball* balls = InitBalls(sdl);
 
-    struct Score images = InitScore(sdl);
-
     struct Particle* particles = InitParticles(sdl);
+
+    struct Score* images = InitScore(sdl);
 
     return (struct Scene) { balls, paddles, sdl , particles, images };
 }

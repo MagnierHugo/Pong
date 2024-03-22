@@ -19,7 +19,6 @@ struct Particle {
     bool Active;
 };
 
-struct Particle* InitParticles(struct SDL sdlStruct);
 void UpdateParticles(struct Particle* particles, float deltaTime);
 SDL_Rect ParticleAsRect(struct Particle particle);
 void DrawParticles(struct Particle* particles, SDL_Renderer* renderer, SDL_Texture* texture);

@@ -48,6 +48,8 @@ void InitSDL(struct SDL sdlStruct)
     {
         ErrorHandling("Erreur initialisation de SDL Mixer", sdlStruct);
     }
+
+    Mix_Volume(0, 7);
 }
 
 struct SDL StartSDL()

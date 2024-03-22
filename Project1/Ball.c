@@ -44,7 +44,10 @@ static void HandleCollisionWithPaddle(
 
 	PlaySound(bounce, sdlStruct);
 
-	SDL_SetWindowTitle(sdlStruct.window, SDL_GetWindowTitle(sdlStruct.window)[1] == 'o' ? "Ping" : "Pong"); // knowing it s the only character iffering it s faster to check for it directly
+	SDL_SetWindowTitle(
+		sdlStruct.window, 
+		SDL_GetWindowTitle(sdlStruct.window)[1] == 'o' ? "Ping" : "Pong"
+	); // knowing it s the only character iffering it s faster to check for it directly
 }
 
 void CollisionWithPaddles(

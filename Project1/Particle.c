@@ -21,24 +21,6 @@ struct Particle {
 };
 
 
-struct Particle* InitParticles(struct SDL sdlStruct)
-{
-	struct Particle* particles = malloc(MAX_PARTICLE_AMOUNT * sizeof(struct Particle));
-	if (particles == NULL) {
-		ErrorHandling(
-			"The memory allocation for the particles failed",
-			sdlStruct
-			);
-	}
-
-	for (int i = 0; i < MAX_PARTICLE_AMOUNT; i++)
-	{
-		particles[i] = (struct Particle) { 0, 0, 0, 0, 0, false };
-	}
-
-	return particles;
-}
-
 // direction -1 -> towards left -> called beacause left screen at the right
 // | direction 1 -> towards right -> called beacause left screen at the left
 // direction 0 -> neutral -> called upon ballSpawn
@@ -46,31 +28,31 @@ void ParticlesBurst(struct Particle* particles, int directionX)
 {
 	for (int i = 0; i < MAX_PARTICLE_AMOUNT; i++)
 	{
-		struct Particle* currentParticle = &particles[i];
+		struct Particle* particle = &particles[i];
 		switch (directionX)
 		{
 			case -1:
-				currentParticle->X = SCREEN_WIDTH;
-				currentParticle->Y = RdmInt(0, SCREEN_HEIGHT - INITIAL_PARTICLE_SIZE, false);
-				currentParticle->DirX = RdmInt(-MAX_PARTICLE_DIR_X, -MIN_PARTICLE_DIR_X, true);
+				particle->X = SCREEN_WIDTH;
+				particle->Y = RdmInt(0, SCREEN_HEIGHT - INITIAL_PARTICLE_SIZE, false);
+				particle->DirX = RdmInt(-MAX_PARTICLE_DIR_X, -MIN_PARTICLE_DIR_X, true);
 				break;
 
 			case 1:
-				currentParticle->X = 0;
-				currentParticle->Y = RdmInt(0, SCREEN_HEIGHT - INITIAL_PARTICLE_SIZE, false);
-				currentParticle->DirX = RdmInt(MIN_PARTICLE_DIR_X, MAX_PARTICLE_DIR_X, true);
+				particle->X = 0;
+				particle->Y = RdmInt(0, SCREEN_HEIGHT - INITIAL_PARTICLE_SIZE, false);
+				particle->DirX = RdmInt(MIN_PARTICLE_DIR_X, MAX_PARTICLE_DIR_X, true);
 				break;
 
 			case 0:
-				currentParticle->X = SCREEN_WIDTH / 2 - INITIAL_PARTICLE_SIZE / 2;
-				currentParticle->Y = SCREEN_HEIGHT / 2 - INITIAL_PARTICLE_SIZE / 2;
-				currentParticle->DirX = RdmInt(-MAX_PARTICLE_DIR_X, MAX_PARTICLE_DIR_X, true);
+				particle->X = SCREEN_WIDTH / 2 - INITIAL_PARTICLE_SIZE / 2;
+				particle->Y = SCREEN_HEIGHT / 2 - INITIAL_PARTICLE_SIZE / 2;
+				particle->DirX = RdmInt(-MAX_PARTICLE_DIR_X, MAX_PARTICLE_DIR_X, true);
 				break;
 		}
 
-		currentParticle->DirY = RdmInt(-MAX_PARTICLE_DIR_Y, MAX_PARTICLE_DIR_Y, true);
-		currentParticle->Size = INITIAL_PARTICLE_SIZE;
-		currentParticle->Active = true;
+		particle->DirY = RdmInt(-MAX_PARTICLE_DIR_Y, MAX_PARTICLE_DIR_Y, true);
+		particle->Size = INITIAL_PARTICLE_SIZE;
+		particle->Active = true;
 
 	}
 }

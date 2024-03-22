@@ -23,24 +23,23 @@
 #include "Music.h"
 
 
-struct InputSummary HandleInput(struct Paddle paddles[2], float deltaTime, bool screenWrapping)
+struct InputSummary HandleInput(
+    struct Paddle paddles[2], 
+    float deltaTime, bool screenWrapping
+)
 {
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
     SDL_Event event;
-    while (SDL_PollEvent(&event) != 0)
-    {  
-        switch (event.type)
-        {
+    while (SDL_PollEvent(&event) != 0) {  
+        switch (event.type) {
             case SDL_QUIT:
                 return (struct InputSummary) { false, false };
 
             case SDL_KEYDOWN:
-                if (event.key.keysym.sym == SDLK_ESCAPE)
-                {
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
                     return (struct InputSummary) { false, false };
                 }
-                else if (event.key.keysym.sym == SDLK_SPACE)
-                {
+                else if (event.key.keysym.sym == SDLK_SPACE) {
                     screenWrapping = !screenWrapping;
                     break;
                 }
@@ -48,11 +47,15 @@ struct InputSummary HandleInput(struct Paddle paddles[2], float deltaTime, bool 
             default:
                 break;    
         }
-
     }
 
-    UpdatePaddle(&paddles[0], deltaTime, keyState[SDL_SCANCODE_S] - keyState[SDL_SCANCODE_W]);
-    UpdatePaddle(&paddles[1], deltaTime, keyState[SDL_SCANCODE_DOWN] - keyState[SDL_SCANCODE_UP]);
+    UpdatePaddle( &paddles[0], deltaTime, 
+        keyState[SDL_SCANCODE_S] - keyState[SDL_SCANCODE_W]
+    );
+    UpdatePaddle( &paddles[1], deltaTime, 
+        keyState[SDL_SCANCODE_DOWN] - keyState[SDL_SCANCODE_UP]
+    );
+
     return (struct InputSummary) { true, screenWrapping };
 }
 
@@ -68,11 +71,18 @@ void PreGame(struct GameState state, int fromWhat)
         currentTime = SDL_GetTicks();
 
         HandleInput(state.scene.Paddles, deltaTime, false);
-
         UpdateParticles(state.scene.Particles, deltaTime);
-
         WindowClear(state.scene.SDL.renderer, state.background);
-        DrawParticles(state.scene.Particles, state.scene.SDL.renderer, CreateTexture(state.scene.SDL, "Image\\definetelyNotAMinecraftSprite.png"));
+
+        DrawParticles(
+            state.scene.Particles, 
+            state.scene.SDL.renderer, 
+            CreateTexture(
+                state.scene.SDL, 
+                "Image\\definetelyNotAMinecraftSprite.png"
+            )
+        );
+
         DrawBalls(state.scene.SDL.renderer, state.scene.Balls);
         DrawPaddles(state.scene.SDL.renderer, state.scene.Paddles);
         AfficherScore(state.scene, state.score[0], state.score[1]);
@@ -108,7 +118,16 @@ void ResetScene(struct Scene* currentScene, int whoWon)
 void DrawScene(struct GameState state)
 {
     WindowClear(state.scene.SDL.renderer, state.background);
-    DrawParticles(state.scene.Particles, state.scene.SDL.renderer, CreateTexture(state.scene.SDL, "Image\\definetelyNotAMinecraftSprite.png"));
+
+    DrawParticles(
+        state.scene.Particles, 
+        state.scene.SDL.renderer, 
+        CreateTexture(
+            state.scene.SDL, 
+            "Image\\definetelyNotAMinecraftSprite.png"
+        )
+    );
+
     DrawBalls(state.scene.SDL.renderer, state.scene.Balls);
     DrawPaddles(state.scene.SDL.renderer, state.scene.Paddles);
     AfficherScore(state.scene, state.score[0], state.score[1]);

@@ -8,6 +8,7 @@
 #include "Paddle.h"
 #include "Ball.h"
 #include "Constants.h"
+#include "scoreUI.h"
 
 
 SDL_Texture* CreateTexture(struct SDL sdlStruct, char* path) 
@@ -35,6 +36,7 @@ void DestroyTextures(struct GameState state)
     
     struct Paddle* paddles = state.scene.Paddles;
     struct Ball* balls = state.scene.Balls;
+    struct Score* images = state.scene.images;
 
     for (int paddleIndex = 0; paddleIndex < 2; paddleIndex++)
     {
@@ -44,5 +46,10 @@ void DestroyTextures(struct GameState state)
     for (int ballIndex = 0; ballIndex < MAX_BALL_AMOUNT; ballIndex++)
     {
         SDL_DestroyTexture(balls[ballIndex].texture);
+    }
+
+    for (int imageIndex = 0; imageIndex < 5; imageIndex++)
+    {
+        SDL_DestroyTexture(images[imageIndex].texture);
     }
 }

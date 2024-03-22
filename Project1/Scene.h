@@ -11,6 +11,6 @@ struct Scene
     struct Paddle* Paddles;
     struct SDL SDL;
     struct Particle* Particles;
-    struct Score images;
+    struct Score* images;
     bool ScreenWrappingActive;
 };
