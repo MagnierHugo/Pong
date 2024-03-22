@@ -56,7 +56,7 @@ struct InputSummary HandleInput(struct Paddle paddles[2], float deltaTime, bool 
     return (struct InputSummary) { true, screenWrapping };
 }
 
-void PreGame(struct Scene scene, int fromWhat, SDL_Texture* backgroundTexture)
+void PreGame(struct GameState state, int fromWhat)
 {
     float deltaTime;
     float currentTime = SDL_GetTicks();
@@ -67,19 +67,19 @@ void PreGame(struct Scene scene, int fromWhat, SDL_Texture* backgroundTexture)
         deltaTime = (SDL_GetTicks() - currentTime) / 1000;
         currentTime = SDL_GetTicks();
 
-        HandleInput(scene.Paddles, deltaTime, false);
+        HandleInput(state.scene.Paddles, deltaTime, false);
 
-        UpdateParticles(scene.Particles, deltaTime);
+        UpdateParticles(state.scene.Particles, deltaTime);
 
-        WindowClear(scene.SDL.renderer, backgroundTexture);
-        DrawParticles(scene.Particles, scene.SDL.renderer, CreateTexture(scene.SDL, "Image\\definetelyNotAMinecraftSprite.png"));
-        DrawBalls(scene.SDL.renderer, scene.Balls);
-        DrawPaddles(scene.SDL.renderer, scene.Paddles);
+        WindowClear(state.scene.SDL.renderer, state.background);
+        DrawParticles(state.scene.Particles, state.scene.SDL.renderer, CreateTexture(state.scene.SDL, "Image\\definetelyNotAMinecraftSprite.png"));
+        DrawBalls(state.scene.SDL.renderer, state.scene.Balls);
+        DrawPaddles(state.scene.SDL.renderer, state.scene.Paddles);
         AfficherScore(state.scene, state.score[0], state.score[1]);
-        SDL_RenderPresent(scene.SDL.renderer); // update display
+        SDL_RenderPresent(state.scene.SDL.renderer); // update display
     }
 
-    KillParticles(scene.Particles);
+    KillParticles(state.scene.Particles);
 }
 
 void ResetScene(struct Scene* currentScene, int whoWon)
@@ -130,7 +130,7 @@ int main(int argc, char* argv[])
         ErrorHandling("Error while trying to read the music", state.scene.SDL);
     }*/
 
-    PreGame(state.scene, 3, state.background);
+    PreGame(state, 3);
 
     Update(state);
 

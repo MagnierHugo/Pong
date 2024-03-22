@@ -103,7 +103,7 @@ void Update(struct GameState state)
         if (state.someoneWon != 0) {
             state.score[state.someoneWon > 0 ? 1 : 0]++;
             printf("%d : %d\n", state.score[0], state.score[1]);
-			PreGame(state.scene, 1, state.background);
+			PreGame(state, 1);
             ResetScene(&state.scene, state.someoneWon);
             state.currentTime = SDL_GetTicks(); // make sure not to murder deltaTime
         }
