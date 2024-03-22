@@ -8,6 +8,7 @@
 #include "HandleSDL.h"
 #include "Ball.h"
 #include "Paddle.h"
+#include "Particle.h"
 #include "scoreUI.h"
 #include "SDLStruct.h"
 
@@ -110,5 +111,21 @@ void Update(struct GameState state)
 
     } while (
         state.gameSettings.ContinueRunning && 
-        state.score[0] < MAX_SCORE && state.score[1] < MAX_SCORE );
+        state.score[0] < MAX_SCORE && state.score[1] < MAX_SCORE);
+}
+
+void UpdateParticles(struct Particle* particles, float deltaTime)
+{
+	for (int i = 0; i < MAX_PARTICLE_AMOUNT; i++)
+	{
+		struct Particle* currentParticle = &particles[i];
+		if (!currentParticle->Active) { continue; }
+		currentParticle->X += currentParticle->DirX * deltaTime;
+		currentParticle->Y += currentParticle->DirY * deltaTime;
+
+		currentParticle->DirX *= PARTICLE_SLOWDOWN_RATE;
+		currentParticle->DirY *= PARTICLE_SLOWDOWN_RATE;
+		currentParticle->Size -= PARTICLE_DECAY_RATE * deltaTime;
+		currentParticle->Active = currentParticle->Size > 0;
+	}
 }

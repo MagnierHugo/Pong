@@ -11,9 +11,6 @@
 
 static struct Paddle* InitPaddles(struct SDL sdlStruct)
 {
-    SDL_Window* window = sdlStruct.window;
-    SDL_Renderer* renderer = sdlStruct.renderer;
-
     struct Paddle* paddles = malloc(2 * sizeof(struct Paddle));
 
     if (paddles == NULL) {
@@ -42,9 +39,6 @@ static struct Paddle* InitPaddles(struct SDL sdlStruct)
 
 static struct Ball* InitBalls(struct SDL sdlStruct)
 {
-    SDL_Window* window = sdlStruct.window;
-    SDL_Renderer* renderer = sdlStruct.renderer;
-
     struct Ball* balls = malloc(MAX_BALL_AMOUNT * sizeof(struct Ball));
 
     if (balls == NULL) {
@@ -69,6 +63,24 @@ static struct Ball* InitBalls(struct SDL sdlStruct)
     return balls;
 }
 
+struct Particle* InitParticles(struct SDL sdlStruct)
+{
+    struct Particle* particles = malloc(MAX_PARTICLE_AMOUNT * sizeof(struct Particle));
+    if (particles == NULL) {
+        ErrorHandling(
+            "The memory allocation for the particles failed",
+            sdlStruct
+        );
+    }
+
+    for (int i = 0; i < MAX_PARTICLE_AMOUNT; i++)
+    {
+        particles[i] = (struct Particle){ 0, 0, 0, 0, 0, false };
+    }
+
+    return particles;
+}
+
 struct Scene InitScene()
 {
     struct SDL sdl = StartSDL();
@@ -77,9 +89,11 @@ struct Scene InitScene()
 
     struct Ball* balls = InitBalls(sdl);
 
-    struct Score images = InitScore(sdl);
-
     struct Particle* particles = InitParticles(sdl);
 
-    return (struct Scene) { balls, paddles, sdl , particles, images };
+    struct Score images = InitScore(sdl);
+
+    return (struct Scene) { balls, paddles, sdl, particles, images };
 }
+
+

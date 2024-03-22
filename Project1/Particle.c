@@ -21,24 +21,6 @@ struct Particle {
 };
 
 
-struct Particle* InitParticles(struct SDL sdlStruct)
-{
-	struct Particle* particles = malloc(MAX_PARTICLE_AMOUNT * sizeof(struct Particle));
-	if (particles == NULL) {
-		ErrorHandling(
-			"The memory allocation for the particles failed",
-			sdlStruct
-			);
-	}
-
-	for (int i = 0; i < MAX_PARTICLE_AMOUNT; i++)
-	{
-		particles[i] = (struct Particle) { 0, 0, 0, 0, 0, false };
-	}
-
-	return particles;
-}
-
 // direction -1 -> towards left -> called beacause left screen at the right
 // | direction 1 -> towards right -> called beacause left screen at the left
 // direction 0 -> neutral -> called upon ballSpawn
@@ -72,22 +54,6 @@ void ParticlesBurst(struct Particle* particles, int directionX)
 		currentParticle->Size = INITIAL_PARTICLE_SIZE;
 		currentParticle->Active = true;
 
-	}
-}
-
-void UpdateParticles(struct Particle* particles, float deltaTime)
-{
-	for (int i = 0; i < MAX_PARTICLE_AMOUNT; i++)
-	{
-		struct Particle* currentParticle = &particles[i];
-		if (!currentParticle->Active) { continue; }
-		currentParticle->X += currentParticle->DirX * deltaTime;
-		currentParticle->Y += currentParticle->DirY * deltaTime;
-		
-		currentParticle->DirX *= PARTICLE_SLOWDOWN_RATE;
-		currentParticle->DirY *= PARTICLE_SLOWDOWN_RATE;
-		currentParticle->Size -= PARTICLE_DECAY_RATE * deltaTime;
-		currentParticle->Active = currentParticle->Size > 0;
 	}
 }
 
