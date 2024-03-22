@@ -4,6 +4,7 @@
 
 #include "SDLStruct.h"
 #include "scoreUI.h"
+#include "obstacle.h"
 
 struct Scene
 {
@@ -12,5 +13,7 @@ struct Scene
     struct SDL SDL;
     struct Particle* Particles;
     struct Score* images;
+    struct Obstacle* obstacles;
+    int nbr_obstacles;
     bool ScreenWrappingActive;
 };

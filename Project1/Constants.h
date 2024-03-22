@@ -29,3 +29,5 @@
 #define song "Sound\\DANCING.wav"
 #define bounce "Sound\\Bounce.wav"
 #define goal "Sound\\HUGO.wav"
+
+#define MAX_OBSTACLE_AMOUNT 5

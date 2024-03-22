@@ -11,6 +11,7 @@
 #include "Particle.h"
 #include "scoreUI.h"
 #include "SDLStruct.h"
+#include "obstacle.h"
 
 
 void UpdatePaddle(struct Paddle* paddle, float deltaTime, int inputY)
@@ -31,14 +32,15 @@ void UpdatePaddle(struct Paddle* paddle, float deltaTime, int inputY)
 }
 
 static int UpdateBall(
-	struct Ball* ball, struct Paddle paddles[2],
-	float deltaTime, struct Scene scene, bool screenWrapping
+	struct Ball* ball, struct Scene scene,
+	float deltaTime, bool screenWrapping
 )
 {
 	ball->X += (ball->DirX * deltaTime * ball->Speed);
 	ball->Y += (ball->DirY * deltaTime * ball->Speed);
 
-	CollisionWithPaddles(ball, paddles, scene.SDL);
+	CollisionBallObstacles(&scene, ball);
+	CollisionWithPaddles(ball, scene.Paddles, scene.SDL);
 
 	if (ball->Y + ball->Size >= SCREEN_HEIGHT) {
 
@@ -74,8 +76,8 @@ static int UpdateBalls(struct Scene scene, float deltaTime)
 		if (!scene.Balls[i].Active) { continue; }
 
 		someoneWon = UpdateBall(
-			&scene.Balls[i], scene.Paddles, deltaTime, 
-			scene, scene.ScreenWrappingActive
+			&scene.Balls[i], scene, deltaTime, 
+			scene.ScreenWrappingActive
 		);
 
 		if (someoneWon != 0) { return someoneWon; }
@@ -87,6 +89,8 @@ void Update(struct GameState state)
 {
 	state.currentTime = SDL_GetTicks();
     do {
+		SpawnObstacles(&state.scene);
+
         state.deltaTime = (SDL_GetTicks() - state.currentTime) / 1000;
         state.currentTime = SDL_GetTicks();
 

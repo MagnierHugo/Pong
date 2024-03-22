@@ -121,5 +121,14 @@ struct Scene InitScene()
 
     struct Score* images = InitScore(sdl);
 
-    return (struct Scene) { balls, paddles, sdl , particles, images };
+    struct Obstacle* obstacles = malloc(
+        MAX_OBSTACLE_AMOUNT * sizeof(struct Obstacle)
+    );
+
+    int nbr_obstacles = 0;
+
+    struct Scene scene = (struct Scene){ balls, paddles, sdl , 
+        particles, images, obstacles, nbr_obstacles };
+
+    return scene;
 }

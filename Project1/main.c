@@ -113,6 +113,12 @@ void ResetScene(struct Scene* currentScene, int whoWon)
             i == 0 // active | only the first ball shoud be active
         };
     }
+
+    free(currentScene->obstacles);
+    currentScene->obstacles = malloc(
+        MAX_OBSTACLE_AMOUNT * sizeof(struct Obstacle)
+    );
+    currentScene->nbr_obstacles = 0;
 }
 
 void DrawScene(struct GameState state)
@@ -130,6 +136,7 @@ void DrawScene(struct GameState state)
 
     DrawBalls(state.scene.SDL.renderer, state.scene.Balls);
     DrawPaddles(state.scene.SDL.renderer, state.scene.Paddles);
+    DrawObstacles(state.scene);
     AfficherScore(state.scene, state.score[0], state.score[1]);
     SDL_RenderPresent(state.scene.SDL.renderer); // update display
     SDL_Delay(FRAMERATE);
