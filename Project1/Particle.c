@@ -57,22 +57,6 @@ void ParticlesBurst(struct Particle* particles, int directionX)
 	}
 }
 
-void UpdateParticles(struct Particle* particles, float deltaTime)
-{
-	for (int i = 0; i < MAX_PARTICLE_AMOUNT; i++)
-	{
-		struct Particle* currentParticle = &particles[i];
-		if (!currentParticle->Active) { continue; }
-		currentParticle->X += currentParticle->DirX * deltaTime;
-		currentParticle->Y += currentParticle->DirY * deltaTime;
-		
-		currentParticle->DirX *= PARTICLE_SLOWDOWN_RATE;
-		currentParticle->DirY *= PARTICLE_SLOWDOWN_RATE;
-		currentParticle->Size -= PARTICLE_DECAY_RATE * deltaTime;
-		currentParticle->Active = currentParticle->Size > 0;
-	}
-}
-
 SDL_Rect ParticleAsRect(struct Particle particle)
 {
 	return (SDL_Rect)

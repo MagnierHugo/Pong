@@ -12,9 +12,6 @@
 
 static struct Paddle* InitPaddles(struct SDL sdlStruct)
 {
-    SDL_Window* window = sdlStruct.window;
-    SDL_Renderer* renderer = sdlStruct.renderer;
-
     struct Paddle* paddles = malloc(2 * sizeof(struct Paddle));
 
     if (paddles == NULL) {
@@ -43,9 +40,6 @@ static struct Paddle* InitPaddles(struct SDL sdlStruct)
 
 static struct Ball* InitBalls(struct SDL sdlStruct)
 {
-    SDL_Window* window = sdlStruct.window;
-    SDL_Renderer* renderer = sdlStruct.renderer;
-
     struct Ball* balls = malloc(MAX_BALL_AMOUNT * sizeof(struct Ball));
 
     if (balls == NULL) {
