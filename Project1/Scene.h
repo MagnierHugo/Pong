@@ -14,7 +14,6 @@ struct Scene
     struct SDL SDL;
     struct Particle* Particles;
     struct Bonus Bonus;
-    struct Score* images;
     struct Obstacle* obstacles;
     int nbr_obstacles;
     bool ScreenWrappingActive;

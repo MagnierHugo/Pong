@@ -6,112 +6,52 @@
 #include "Constants.h"
 #include "textures.h"
 
+void RenderScore(struct Scene scene, SDL_Rect* dest, SDL_Texture* texture) {
+    SDL_RenderCopy(
+        scene.SDL.renderer,
+        texture,
+        NULL, dest
+    );
+}
+
+void AfficherScoreSingle(struct Scene scene, int score, SDL_Rect dest) {
+    switch (score)
+    {
+    case 1:
+        RenderScore(scene, &dest,
+            CreateTexture(scene.SDL, "Image\\1.png"));
+        break;
+
+    case 2:
+        RenderScore(scene, &dest,
+            CreateTexture(scene.SDL, "Image\\2.png"));
+        break;
+    case 3:
+        RenderScore(scene, &dest,
+            CreateTexture(scene.SDL, "Image\\3.png"));
+        break;
+    case 4:
+        RenderScore(scene, &dest,
+            CreateTexture(scene.SDL, "Image\\4.png"));
+        break;
+    case 5:
+        RenderScore(scene, &dest,
+            CreateTexture(scene.SDL, "Image\\5.png"));
+        break;
+    default:
+        break;
+    }
+}
 
 void AfficherScore(struct Scene scene, int scoreGauche, int scoreDroite)
 {
     SDL_Rect destRectGauche = { 
         PADDLE_OFFSET_FROM_WALL, 25, 60, 55 
     }; // Position pour le score gauche
-    SDL_Rect destRectDroite = { 
-        SCREEN_WIDTH - PADDLE_OFFSET_FROM_WALL - 50, 25, 60, 55 
-    }; // Position pour le score droit
-    printf("%d : %d\n", scoreGauche, scoreDroite);
-    switch (scoreGauche)
-    {
-        case 1:
-            SDL_RenderCopy(
-                scene.SDL.renderer,
-                //scene.images[scoreGauche - 1].texture,
-                CreateTexture(scene.SDL, "Image\\1.png"),
-                NULL, &destRectGauche
-            ); break;
-
-            //CreateTexture(sdlStruct, "Image\\1.png")
-        case 2:
-            SDL_RenderCopy(
-                scene.SDL.renderer,
-                //scene.images[scoreGauche - 1].texture,
-                CreateTexture(scene.SDL, "Image\\2.png"),
-                NULL, &destRectGauche
-            ); break;
-        case 3:
-            SDL_RenderCopy(
-                scene.SDL.renderer,
-                //scene.images[scoreGauche - 1].texture,
-                CreateTexture(scene.SDL, "Image\\3.png"),
-                NULL, &destRectGauche
-            ); break;
-        case 4:
-            SDL_RenderCopy(
-                scene.SDL.renderer,
-                //scene.images[scoreGauche - 1].texture,
-                CreateTexture(scene.SDL, "Image\\4.png"),
-                NULL, &destRectGauche
-            ); break;
-        case 5:
-            SDL_RenderCopy(
-                scene.SDL.renderer,
-                //scene.images[scoreGauche - 1].texture,
-                CreateTexture(scene.SDL, "Image\\5.png"),
-                NULL, &destRectGauche
-            ); break;
-        default:
-            break;
-    }
-   //     SDL_RenderCopy(
-   //         scene.SDL.renderer, 
-			//scene.images[scoreGauche - 1].texture,
-   //        /* CreateTexture(
-   //             scene.SDL,
-   //             "Image\\definetelyNotAMinecraftSprite.png"
-   //         ),*/
-   //         NULL, &destRectGauche
-   //     );
+    AfficherScoreSingle(scene, scoreGauche, destRectGauche);
     
-    switch (scoreDroite)
-    {
-        case 1:
-            SDL_RenderCopy(
-                scene.SDL.renderer,
-                //scene.images[scoreGauche - 1].texture,
-                CreateTexture(scene.SDL, "Image\\1.png"),
-                NULL, &destRectDroite
-            ); break;
-            //CreateTexture(sdlStruct, "Image\\1.png")
-        case 2:
-            SDL_RenderCopy(
-                scene.SDL.renderer,
-                //scene.images[scoreGauche - 1].texture,
-                CreateTexture(scene.SDL, "Image\\2.png"),
-                NULL, &destRectDroite
-            ); break;
-        case 3:
-            SDL_RenderCopy(
-                scene.SDL.renderer,
-                //scene.images[scoreGauche - 1].texture,
-                CreateTexture(scene.SDL, "Image\\3.png"),
-                NULL, &destRectDroite
-            ); break;
-        case 4:
-            SDL_RenderCopy(
-                scene.SDL.renderer,
-                //scene.images[scoreGauche - 1].texture,
-                CreateTexture(scene.SDL, "Image\\4.png"),
-                NULL, &destRectDroite
-            ); break;
-        case 5:
-            SDL_RenderCopy(
-                scene.SDL.renderer,
-                //scene.images[scoreGauche - 1].texture,
-                CreateTexture(scene.SDL, "Image\\5.png"),
-                NULL, &destRectDroite
-            ); break;
-        default:
-            break;
-    }
-        /*SDL_RenderCopy(
-            scene.SDL.renderer, 
-            scene.images[scoreDroite - 1].texture, 
-            NULL, &destRectDroite
-        );*/
+    SDL_Rect destRectDroite = {
+        SCREEN_WIDTH - PADDLE_OFFSET_FROM_WALL - 50, 25, 60, 55
+    }; // Position pour le score droit
+    AfficherScoreSingle(scene, scoreDroite, destRectDroite);
 }

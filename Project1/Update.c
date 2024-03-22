@@ -43,7 +43,6 @@ static int UpdateBall(
 	CollisionWithPaddles(ball, scene.Paddles, scene.SDL);
 
 	if (ball->Y + ball->Size >= SCREEN_HEIGHT) {
-
 		if (screenWrapping) {
 			ball->Y = 1;
 		}
@@ -67,23 +66,6 @@ static int UpdateBall(
 
 	return CheckGoal(ball, scene);
 }
-
-//static int UpdateBalls(struct Scene scene, float deltaTime)
-//{
-//	int someoneWon;
-//	for (int i = 0; i < MAX_BALL_AMOUNT; i++)
-//	{
-//		if (!scene.Balls[i].Active) { continue; }
-//
-//		someoneWon = UpdateBall(
-//			&scene.Balls[i], scene.Paddles, deltaTime, 
-//			scene, scene.ScreenWrappingActive
-//		);
-//
-//		if (someoneWon != 0) { return someoneWon; }
-//	}
-//	return 0;
-//}
 
 static int UpdateBalls(struct Scene scene, float deltaTime)
 {
@@ -112,11 +94,12 @@ static int UpdateBalls(struct Scene scene, float deltaTime)
 	}
 	return 0;
 }
+
 void Update(struct GameState state)
 {
 	state.currentTime = SDL_GetTicks();
     do {
-		SpawnObstacles(&state.scene);
+		if (state.score[0] + state.score[1] > 0) SpawnObstacles(&state.scene); // no shenanigans for first round as it should be a warmup
 
         state.deltaTime = (SDL_GetTicks() - state.currentTime) / 1000;
         state.currentTime = SDL_GetTicks();
@@ -126,22 +109,19 @@ void Update(struct GameState state)
             state.deltaTime, 
             state.gameSettings.ScreenWrappingActive
         );
-
-        state.scene.ScreenWrappingActive = state.gameSettings.ScreenWrappingActive;
+        state.scene.ScreenWrappingActive = 
+			state.gameSettings.ScreenWrappingActive;
         state.someoneWon = UpdateBalls(state.scene, state.deltaTime);
 		UpdateParticles(state.scene.Particles, state.deltaTime);
-
         DrawScene(state);
 
         if (state.someoneWon != 0) {
             state.score[state.someoneWon > 0 ? 1 : 0]++;
 			PreGame(state, 1);
-            ResetScene(&state.scene, state.someoneWon);
+			ResetScene(&state.scene, state.someoneWon);
             state.currentTime = SDL_GetTicks(); // make sure not to murder deltaTime
         }
-
-    } while (
-        state.gameSettings.ContinueRunning && 
+    } while (state.gameSettings.ContinueRunning && 
         state.score[0] < MAX_SCORE && state.score[1] < MAX_SCORE);
 }
 

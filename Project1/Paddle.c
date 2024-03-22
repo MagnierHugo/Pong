@@ -21,7 +21,8 @@ struct Paddle
 
 SDL_Rect PaddleAsRect(struct Paddle paddle)
 {
-	return (SDL_Rect) { (int) paddle.X, (int) paddle.Y, paddle.Width, paddle.Height };
+	return (SDL_Rect) { (int) paddle.X, (int) paddle.Y, 
+		paddle.Width, paddle.Height };
 }
 
 void DrawPaddles(SDL_Renderer* renderer, struct Paddle paddles[2])

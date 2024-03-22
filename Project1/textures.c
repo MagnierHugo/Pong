@@ -20,7 +20,10 @@ SDL_Texture* CreateTexture(struct SDL sdlStruct, char* path)
     }
 
     // Création de la texture à partir de l'image
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(sdlStruct.renderer, image);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(
+        sdlStruct.renderer, image
+    );
+
     SDL_FreeSurface(image); // Libération de la surface, la texture contient maintenant l'image
 
     if (!texture) {
@@ -36,7 +39,6 @@ void DestroyTextures(struct GameState state)
     
     struct Paddle* paddles = state.scene.Paddles;
     struct Ball* balls = state.scene.Balls;
-    struct Score* images = state.scene.images;
 
     for (int paddleIndex = 0; paddleIndex < 2; paddleIndex++)
     {
@@ -46,10 +48,5 @@ void DestroyTextures(struct GameState state)
     for (int ballIndex = 0; ballIndex < MAX_BALL_AMOUNT; ballIndex++)
     {
         SDL_DestroyTexture(balls[ballIndex].texture);
-    }
-
-    for (int imageIndex = 0; imageIndex < 5; imageIndex++)
-    {
-        SDL_DestroyTexture(images[imageIndex].texture);
     }
 }

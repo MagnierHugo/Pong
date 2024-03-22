@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <stdio.h>
 
 #include "SDLStruct.h"
 #include "HandleSDL.h"
@@ -87,9 +88,9 @@ static struct Particle* InitParticles(struct SDL sdlStruct)
     return particles;
 }
 
-static struct Score* InitScore(struct SDL sdlStruct)
+static SDL_Texture* InitScore(struct SDL sdlStruct)
 {
-    struct Score* images = malloc(5 * sizeof(struct Score));
+    SDL_Texture** images = malloc(5 * sizeof(SDL_Texture*));
 
     if (images == NULL) {
         ErrorHandling(
@@ -98,23 +99,21 @@ static struct Score* InitScore(struct SDL sdlStruct)
         );
     }
 
-    images[0] = (struct Score){ CreateTexture(sdlStruct, "Image\\1.png") };
+    /*images[0] = (struct Score){ CreateTexture(sdlStruct, "Image\\1.png") };
     images[1] = (struct Score){ CreateTexture(sdlStruct, "Image\\2.png") };
     images[2] = (struct Score){ CreateTexture(sdlStruct, "Image\\3.png") };
     images[3] = (struct Score){ CreateTexture(sdlStruct, "Image\\4.png") };
-    images[4] = (struct Score){ CreateTexture(sdlStruct, "Image\\5.png") };
-    
-    printf("this happened");
-    /*char* paths[5] = {
+    images[4] = (struct Score){ CreateTexture(sdlStruct, "Image\\5.png") };*/
+
+    char* paths[5] = {
         "Image\\1.png", "Image\\2.png", "Image\\3.png",
         "Image\\4.png", "Image\\5.png"
     };
 
     for (int i = 0; i < 5; i++)
     {
-        images[i] = (struct Score){ CreateTexture(sdlStruct, paths[i])};
-    }*/
-
+        images[i] = CreateTexture(sdlStruct, paths[i]);
+    }
     return images;
 }
 
@@ -128,16 +127,15 @@ struct Scene InitScene()
 
     struct Particle* particles = InitParticles(sdl);
 
-    struct Score* images = InitScore(sdl);
-
-    struct Obstacle* obstacles = malloc(
-        MAX_OBSTACLE_AMOUNT * sizeof(struct Obstacle)
+    struct Obstacle* obstacles = calloc(
+        MAX_OBSTACLE_AMOUNT,
+        sizeof(struct Obstacle)
     );
 
     int nbr_obstacles = 0;
 
     struct Scene scene = (struct Scene){ balls, paddles, sdl , 
-        particles, images, obstacles, nbr_obstacles };
+        particles, obstacles, nbr_obstacles };
 
     return scene;
 }

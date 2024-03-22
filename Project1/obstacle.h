@@ -1,11 +1,13 @@
 #pragma once
 
 #include <SDL.h>
+#include <stdbool.h>
 
 struct Obstacle
 {
 	SDL_Rect rect;
 	SDL_Texture* texture;
+	bool isBonus;
 };
 
 void SpawnObstacles(struct Scene* scene);

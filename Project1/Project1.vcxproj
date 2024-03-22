@@ -138,7 +138,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ball.c" />
-    <ClCompile Include="Bonus.c" />
     <ClCompile Include="Color.h" />
     <ClCompile Include="HandleSDL.c" />
     <ClCompile Include="Init.c" />

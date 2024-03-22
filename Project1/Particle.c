@@ -68,7 +68,8 @@ SDL_Rect ParticleAsRect(struct Particle particle)
 	};
 }
 
-void DrawParticles(struct Particle* particles, SDL_Renderer* renderer, SDL_Texture* texture)
+void DrawParticles(struct Particle* particles, 
+	SDL_Renderer* renderer, SDL_Texture* texture)
 {
 	for (int i = 0; i < MAX_PARTICLE_AMOUNT; i++)
 	{
@@ -76,8 +77,6 @@ void DrawParticles(struct Particle* particles, SDL_Renderer* renderer, SDL_Textu
 		if (!currentParticle.Active) { continue; }
 		SDL_Rect particleRect = ParticleAsRect(currentParticle);
 
-		//SDL_SetRenderDrawColor(renderer, curBall.Color.R, curBall.Color.G, curBall.Color.B, curBall.Color.A);
-		//SDL_RenderFillRect(renderer, &ballRect);
 		SDL_RenderCopy(renderer, texture, NULL, &particleRect);
 	}
 }
