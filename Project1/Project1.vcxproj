@@ -142,6 +142,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="Music.c" />
     <ClCompile Include="Paddle.c" />
+    <ClCompile Include="Particle.c" />
     <ClCompile Include="Scene.h" />
     <ClCompile Include="Update.c" />
     <ClCompile Include="Utility.c" />

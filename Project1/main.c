@@ -84,7 +84,7 @@ void ResetScene(struct Scene* currentScene, int whoWon)
             whoWon, // dir x
             RdmInt(-1, 1, true), // dir y
             BALL_INITIAL_SPEED, // speed
-             CreateTexture(currentScene->SDL, "Image\\ball.png"),
+            CreateTexture(currentScene->SDL, "Image\\ball.png"),
             i == 0 // active | only the first ball shoud be active
         
         };
@@ -110,9 +110,7 @@ int main(int argc, char* argv[])
         0, { 0, 0 } // someoneWon and score
     };
 
-    if (dance(song) != 0) {
-        ErrorHandling("Error while trying to read the music", state.scene.SDL);
-    }
+    PlaySound(song, state.scene.SDL);
 
     BeginningCountdown(state.scene, 3, state.background);
 

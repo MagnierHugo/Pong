@@ -109,6 +109,5 @@ void Update(struct GameState state)
 
     } while (
         state.gameSettings.ContinueRunning && 
-        state.score[0] < MAX_SCORE && 
-        state.score[1] < MAX_SCORE );
+        state.score[0] < MAX_SCORE && state.score[1] < MAX_SCORE );
 }

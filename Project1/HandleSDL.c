@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <SDL_mixer.h>
 //#include <SDL_ttf.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +11,8 @@
 #include "Constants.h"
 #include "textures.h"
 #include "GameState.h"
+#include "Utility.h"
+
 
 int ErrorHandling(char* message, struct SDL sdlStruct) 
 {
@@ -22,19 +25,36 @@ int ErrorHandling(char* message, struct SDL sdlStruct)
             }
             SDL_DestroyWindow(sdlStruct.window);
         }
+        Mix_CloseAudio();
         SDL_Quit();
     }
     exit(EXIT_FAILURE);
+}
+
+void InitSDL(struct SDL sdlStruct)
+{
+    // Initialisation SDL Video
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        ErrorHandling("Erreur SDL Init failed", sdlStruct);
+    }
+
+    // Initialisation SDL Audio
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+        ErrorHandling("Erreur initialisation de SDL Audio", sdlStruct);
+    }
+
+    // Open Audio Channels
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, NUMBER_OF_CHANNELS, 2048) < 0)
+    {
+        ErrorHandling("Erreur initialisation de SDL Mixer", sdlStruct);
+    }
 }
 
 struct SDL StartSDL()
 {
     struct SDL sdlStruct = { NULL, NULL };
 
-    // Initialisation SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        ErrorHandling("Erreur SDL Init failed", sdlStruct);
-    }
+    InitSDL(sdlStruct);
 
     srand(time(NULL));
     //creer une fenetre avec SDL

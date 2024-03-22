@@ -1,3 +1,3 @@
 #pragma once
 
-int dance(char songWAV[20]);
+void PlaySound(char songWAV[20], struct SDL sdlStruct);
