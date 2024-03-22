@@ -47,8 +47,10 @@ static struct Ball* InitBalls(struct SDL sdlStruct)
     }
 
     srand(time(NULL));
+
     for (int i = 0; i < MAX_BALL_AMOUNT; i++)
     {
+        
         balls[i] = (struct Ball){
                 SCREEN_WIDTH / 2 - BALL_SIZE / 2, // x pos
                 SCREEN_HEIGHT / 2 - BALL_SIZE / 2, // y pos
@@ -96,7 +98,14 @@ static struct Score* InitScore(struct SDL sdlStruct)
         );
     }
 
-    char* paths[5] = {
+    images[0] = (struct Score){ CreateTexture(sdlStruct, "Image\\1.png") };
+    images[1] = (struct Score){ CreateTexture(sdlStruct, "Image\\2.png") };
+    images[2] = (struct Score){ CreateTexture(sdlStruct, "Image\\3.png") };
+    images[3] = (struct Score){ CreateTexture(sdlStruct, "Image\\4.png") };
+    images[4] = (struct Score){ CreateTexture(sdlStruct, "Image\\5.png") };
+    
+    printf("this happened");
+    /*char* paths[5] = {
         "Image\\1.png", "Image\\2.png", "Image\\3.png",
         "Image\\4.png", "Image\\5.png"
     };
@@ -104,7 +113,7 @@ static struct Score* InitScore(struct SDL sdlStruct)
     for (int i = 0; i < 5; i++)
     {
         images[i] = (struct Score){ CreateTexture(sdlStruct, paths[i])};
-    }
+    }*/
 
     return images;
 }

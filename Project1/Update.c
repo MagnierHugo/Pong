@@ -68,23 +68,50 @@ static int UpdateBall(
 	return CheckGoal(ball, scene);
 }
 
+//static int UpdateBalls(struct Scene scene, float deltaTime)
+//{
+//	int someoneWon;
+//	for (int i = 0; i < MAX_BALL_AMOUNT; i++)
+//	{
+//		if (!scene.Balls[i].Active) { continue; }
+//
+//		someoneWon = UpdateBall(
+//			&scene.Balls[i], scene.Paddles, deltaTime, 
+//			scene, scene.ScreenWrappingActive
+//		);
+//
+//		if (someoneWon != 0) { return someoneWon; }
+//	}
+//	return 0;
+//}
+
 static int UpdateBalls(struct Scene scene, float deltaTime)
 {
-	int someoneWon;
+	if (scene.Balls[0].Speed == BALL_SPEED_TO_SPAWN_ANOTHER &&
+		abs(scene.Balls[0].X - SCREEN_WIDTH / 2) < DISTANCE_TO_CENTER_LENIENCY &&
+		!scene.Balls[1].Active)
+	{
+
+		scene.Balls[0].X = SCREEN_WIDTH / 2 - scene.Balls[0].Size / 2;
+		scene.Balls[1].X = scene.Balls[0].X;
+		scene.Balls[1].Active = true;
+		scene.Balls[1].DirX = -scene.Balls[0].DirX;
+		scene.Balls[1].Speed = scene.Balls[0].Speed;
+		ParticlesBurst(scene.Particles, 0);
+	}
+
+	int someoneWon = 0;
 	for (int i = 0; i < MAX_BALL_AMOUNT; i++)
 	{
 		if (!scene.Balls[i].Active) { continue; }
-
 		someoneWon = UpdateBall(
 			&scene.Balls[i], scene, deltaTime, 
 			scene.ScreenWrappingActive
 		);
-
 		if (someoneWon != 0) { return someoneWon; }
 	}
 	return 0;
 }
-
 void Update(struct GameState state)
 {
 	state.currentTime = SDL_GetTicks();
@@ -102,12 +129,12 @@ void Update(struct GameState state)
 
         state.scene.ScreenWrappingActive = state.gameSettings.ScreenWrappingActive;
         state.someoneWon = UpdateBalls(state.scene, state.deltaTime);
+		UpdateParticles(state.scene.Particles, state.deltaTime);
 
         DrawScene(state);
 
         if (state.someoneWon != 0) {
             state.score[state.someoneWon > 0 ? 1 : 0]++;
-            printf("%d : %d\n", state.score[0], state.score[1]);
 			PreGame(state, 1);
             ResetScene(&state.scene, state.someoneWon);
             state.currentTime = SDL_GetTicks(); // make sure not to murder deltaTime
