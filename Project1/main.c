@@ -8,6 +8,7 @@
 #include <time.h>
 
 #include "Scene.h"
+#include "ScoreUI.h"
 #include "Ball.h"
 #include "Paddle.h"
 #include "Constants.h"
@@ -54,15 +55,17 @@ struct InputSummary HandleInput(struct Paddle paddles[2], float deltaTime, bool 
     return (struct InputSummary) { true, screenWrapping };
 }
 
-void BeginningCountdown(struct Scene scene, int fromWhat, SDL_Texture* background)
+void BeginningCountdown(struct GameState state, int fromWhat)
 {
     //for (int i = fromWhat; i > 0; i--)
     //{
-        WindowClear(scene.SDL.renderer, background);
-        DrawBalls(scene.SDL.renderer, scene.Balls);
-        DrawPaddles(scene.SDL.renderer, scene.Paddles);
+        WindowClear(state.scene.SDL.renderer, state.background);
+        DrawBalls(state.scene.SDL.renderer, state.scene.Balls);
+        DrawPaddles(state.scene.SDL.renderer, state.scene.Paddles);
+
+        AfficherScore(state.scene, state.score[0], state.score[1]);
         // render some texture with I as s second counter
-        SDL_RenderPresent(scene.SDL.renderer); // update display
+        SDL_RenderPresent(state.scene.SDL.renderer); // update display
         SDL_Delay(fromWhat * 1000);
     //}
 }
@@ -91,12 +94,13 @@ void ResetScene(struct Scene* currentScene, int whoWon)
     }
 }
 
-void DrawScene(struct Scene currentScene, SDL_Texture* background)
+void DrawScene(struct GameState state)
 {
-    WindowClear(currentScene.SDL.renderer, background);
-    DrawBalls(currentScene.SDL.renderer, currentScene.Balls);
-    DrawPaddles(currentScene.SDL.renderer, currentScene.Paddles);
-    SDL_RenderPresent(currentScene.SDL.renderer); // update display
+    WindowClear(state.scene.SDL.renderer, state.background);
+    DrawBalls(state.scene.SDL.renderer, state.scene.Balls);
+    DrawPaddles(state.scene.SDL.renderer, state.scene.Paddles);
+    AfficherScore(state.scene, state.score[0], state.score[1]);
+    SDL_RenderPresent(state.scene.SDL.renderer); // update display
     SDL_Delay(FRAMERATE);
 }
 
@@ -110,11 +114,11 @@ int main(int argc, char* argv[])
         0, { 0, 0 } // someoneWon and score
     };
 
-    if (dance(song) != 0) {
+    /*if (dance(song) != 0) {
         ErrorHandling("Error while trying to read the music", state.scene.SDL);
-    }
+    }*/
 
-    BeginningCountdown(state.scene, 3, state.background);
+    BeginningCountdown(state,3);
 
     Update(state);
 

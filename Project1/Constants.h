@@ -17,3 +17,9 @@
 #define song "Sound\\DANCING.wav"
 #define bounce "Sound\\Bounce.wav"
 #define goal "Sound\\HUGO.wav"
+
+#define Le1 "Image\\1.png"
+#define Le2 "Image\\2.png"
+#define Le3 "Image\\3.png"
+#define Le4 "Image\\4.png"
+#define Le5 "Image\\5.png"

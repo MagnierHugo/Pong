@@ -9,7 +9,6 @@
 #include "Music.h"
 #include "HandleSDL.h"
 
-
 struct Ball
 {
 	int X;

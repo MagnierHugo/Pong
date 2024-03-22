@@ -76,5 +76,7 @@ struct Scene InitScene()
 
     struct Ball* balls = InitBalls(sdl);
 
-    return (struct Scene) { balls, paddles, sdl };
+    struct Score images = InitScore(sdl);
+
+    return (struct Scene) { balls, paddles, sdl, images };
 }

@@ -8,6 +8,8 @@
 #include "HandleSDL.h"
 #include "Ball.h"
 #include "Paddle.h"
+#include "scoreUI.h"
+#include "SDLStruct.h"
 
 
 void UpdatePaddle(struct Paddle* paddle, float deltaTime, int inputY)
@@ -97,13 +99,13 @@ void Update(struct GameState state)
         state.scene.ScreenWrappingActive = state.gameSettings.ScreenWrappingActive;
         state.someoneWon = UpdateBalls(state.scene, state.deltaTime);
 
-        DrawScene(state.scene, state.background);
+        DrawScene(state);
 
         if (state.someoneWon != 0) {
             state.score[state.someoneWon > 0 ? 1 : 0]++;
             printf("%d : %d\n", state.score[0], state.score[1]);
             ResetScene(&state.scene, state.someoneWon);
-            BeginningCountdown(state.scene, 1, state.background);
+            BeginningCountdown(state, 1);
             state.currentTime = SDL_GetTicks(); // make sure not to murder deltaTime
         }
 

@@ -143,6 +143,7 @@
     <ClCompile Include="Music.c" />
     <ClCompile Include="Paddle.c" />
     <ClCompile Include="Scene.h" />
+    <ClCompile Include="scoreUI.c" />
     <ClCompile Include="Update.c" />
     <ClCompile Include="Utility.c" />
     <ClCompile Include="textures.c" />
@@ -158,6 +159,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="Music.h" />
     <ClInclude Include="Paddle.h" />
+    <ClInclude Include="scoreUI.h" />
     <ClInclude Include="SDLStruct.h" />
     <ClInclude Include="Update.h" />
     <ClInclude Include="Utility.h" />
