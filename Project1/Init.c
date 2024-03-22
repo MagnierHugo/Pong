@@ -5,6 +5,7 @@
 #include "Ball.h"
 #include "Constants.h"
 #include "Paddle.h"
+#include "Particle.h"
 #include "textures.h"
 #include "Scene.h"
 
@@ -76,5 +77,7 @@ struct Scene InitScene()
 
     struct Ball* balls = InitBalls(sdl);
 
-    return (struct Scene) { balls, paddles, sdl };
+    struct Particle* particles = InitParticles(sdl);
+
+    return (struct Scene) { balls, paddles, sdl , particles };
 }
